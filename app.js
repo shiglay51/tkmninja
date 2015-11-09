@@ -1,4 +1,4 @@
-var WebSocketServer = require('ws').Server;
+﻿var WebSocketServer = require('ws').Server;
 var http = require('http');
 var server = http.createServer();
 var crypto = require('crypto');
@@ -241,7 +241,7 @@ wss.on('connection', function (ws) {
     });
 });
 
-server.listen(7911);
+server.listen(process.env.PORT || 5000);
 
 process.on('uncaughtException', function (e) {
      console.log('uncaughtException => ' + e);
