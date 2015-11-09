@@ -23,11 +23,11 @@ var roomList = [
     , new Cataso()
     , new Cataso()
     , new Cataso()
-    , new Cataso()
-    , new Cataso()
-    , new Cataso()
-    , new Cataso()
-    , new Cataso()
+    , new BattleRaiso()
+    , new BattleRaiso()
+    , new BattleRaiso()
+    , new BattleRaiso()
+    , new BattleRaiso()
 ];
 
 var User = function (ws, uid, trip) {
