@@ -5,7 +5,7 @@ var crypto = require('crypto');
 var MersenneTwister = require('./MersenneTwister');
 var Cataso = require('./cataso/Cataso');
 var BattleRaiso = require('./battleraiso/BattleRaiso');
-var Acquiso = require('./acquiso/Acquiso');
+var Goipai = require('./acquiso/Goipai');
 
 var roomList = [
       new Cataso()
@@ -27,7 +27,7 @@ var roomList = [
     , new BattleRaiso()
     , new BattleRaiso()
     , new BattleRaiso()
-    , new BattleRaiso()
+    , new Goipai()
 ];
 
 var User = function (ws, uid, trip) {

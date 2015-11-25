@@ -1,4 +1,4 @@
-var Room = require('../Room');
+﻿var Room = require('../Room');
 var MersenneTwister = require('../MersenneTwister');
 var Game = require('./Game');
 var Const = require('./Const');
@@ -55,8 +55,6 @@ BattleRaiso.prototype.onChat = function (user, message) {
 }
 
 BattleRaiso.prototype.onMessage = function (uid, message) {
-    console.log(uid + ':' + message);
-
     if (message[0] === 'a') {
         this.unicast(uid, JSON.stringify(this.game));
     } else {
