@@ -5,7 +5,7 @@ var crypto = require('crypto');
 var MersenneTwister = require('./MersenneTwister');
 var Cataso = require('./cataso/Cataso');
 var BattleRaiso = require('./battleraiso/BattleRaiso');
-var Goipai = require('./acquiso/Goipai');
+var Goipai = require('./goipai/Goipai');
 
 var roomList = [
       new Cataso()
