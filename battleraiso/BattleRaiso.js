@@ -1,4 +1,4 @@
-﻿var Room = require('../Room');
+var Room = require('../Room');
 var MersenneTwister = require('../MersenneTwister');
 var Game = require('./Game');
 var Const = require('./Const');
