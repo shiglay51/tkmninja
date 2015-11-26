@@ -26,7 +26,7 @@ var roomList = [
     , new BattleRaiso()
     , new BattleRaiso()
     , new BattleRaiso()
-    , new BattleRaiso()
+    , new Goipai()
     , new Goipai()
 ];
 

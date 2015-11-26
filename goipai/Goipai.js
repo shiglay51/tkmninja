@@ -90,7 +90,7 @@ Goipai.prototype.finish = function () {
         );
     }
 
-    game.state = State.READY;
+
     game.active = Index.NONE;
     game.priority.length = 0;
 
@@ -100,6 +100,8 @@ Goipai.prototype.finish = function () {
         playerList[i].uid = '';
     }
 
+    game.state = State.READY;
+    this.isPlaying = false;
     game.sound = Sound.ENDING;
 }
 
@@ -306,7 +308,7 @@ Goipai.prototype.onMessage = function (uid, message) {
                         if (game.phase === Phase.FIVE_POWN) {
                             var priority = game.priority;
 
-                            that.chat('?', FONT_COLOR[priority[0]], '続行されました。');
+                            that.chat('?', FONT_COLOR[priority[0]], '決定');
 
                             priority.length = 0;
                             priority.push(game.active);
@@ -327,7 +329,7 @@ Goipai.prototype.onMessage = function (uid, message) {
                         var game = that.game;
 
                         if (game.phase === Phase.FIVE_POWN) {
-                            that.chat('?', FONT_COLOR[game.priority[0]], '流されました。');
+                            that.chat('?', FONT_COLOR[game.priority[0]], '流局');
 
                             Game.deal(game, that.mt);
                             that.deal(game);
@@ -483,7 +485,9 @@ Goipai.prototype.onMessage = function (uid, message) {
 
                             score[color] += point;
 
-                            if (score[color] < 150) {
+                            if (score[0] >= 150 || score[1] >= 150) {
+                                that.finish();
+                            } else {
                                 priority.length = 0;
 
                                 priority.push(0);
@@ -493,8 +497,6 @@ Goipai.prototype.onMessage = function (uid, message) {
 
                                 game.phase = Phase.PAUSE;
                                 game.sound = Sound.GET;
-                            } else {
-                                that.finish();
                             }
                         }
                     })(this);
