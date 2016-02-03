@@ -45,8 +45,7 @@ Goipai.prototype.onChat = function (user, message) {
     var color = 'white';
 
     var i;
-    var len1 = playerList.length;
-    for (i = 0; i < len1; i++) {
+    for (i = 0; i < playerList.length; i++) {
         if (playerList[i].uid === user.uid) {
             color = FONT_COLOR[i];
             break;
@@ -95,8 +94,7 @@ Goipai.prototype.finish = function () {
     game.priority.length = 0;
 
     var i;
-    var len1 = playerList.length;
-    for (i = 0; i < len1; i++) {
+    for (i = 0; i < playerList.length; i++) {
         playerList[i].uid = '';
     }
 
@@ -117,8 +115,7 @@ Goipai.prototype.deal = function (uid) {
     var max;
 
     var i;
-    var len1 = playerList.length;
-    for (i = 0; i < len1; i++) {
+    for (i = 0; i < playerList.length; i++) {
         player = playerList[i];
 
         switch (Player.countPown(player)) {
@@ -238,8 +235,7 @@ Goipai.prototype.onMessage = function (uid, message) {
                         var isJoined = false;
 
                         var i;
-                        var len1 = playerList.length;
-                        for (i = 0; i < len1; i++) {
+                        for (i = 0; i < playerList.length; i++) {
                             player = playerList[i];
 
                             if (player.uid === uid) {
@@ -249,7 +245,7 @@ Goipai.prototype.onMessage = function (uid, message) {
                         }
 
                         if (!isJoined) {
-                            for (i = 0; i < len1; i++) {
+                            for (i = 0; i < playerList.length; i++) {
                                 player = playerList[i];
 
                                 if (player.uid === '') {
@@ -266,8 +262,7 @@ Goipai.prototype.onMessage = function (uid, message) {
                         var playerList = that.game.playerList;
 
                         var i;
-                        var len1 = playerList.length;
-                        for (i = 0; i < len1; i++) {
+                        for (i = 0; i < playerList.length; i++) {
                             var player = playerList[i];
 
                             if (player.uid === uid) {
@@ -510,8 +505,7 @@ Goipai.prototype.onMessage = function (uid, message) {
                             var priority = game.priority;
 
                             var i;
-                            var len1 = priority.length;
-                            for (i = 0; i < len1; i++) {
+                            for (i = 0; i < priority.length; i++) {
                                 if (playerList[priority[i]].uid === uid) {
                                     priority.splice(i, 1);
                                     break;

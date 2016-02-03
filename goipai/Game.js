@@ -11,13 +11,21 @@ var Game = function () { }
 Game.suffle = function (source, mt) {
     var tmp = [];
 
-    while (source.length > 0) { tmp.push(source.splice(mt.nextInt(source.length), 1)[0]); }
+    while (source.length > 0) {
+        tmp.push(source.splice(mt.nextInt(source.length), 1)[0]);
+    }
 
-    while (tmp.length > 0) { source.push(tmp.splice(mt.nextInt(tmp.length), 1)[0]); }
+    while (tmp.length > 0) {
+        source.push(tmp.splice(mt.nextInt(tmp.length), 1)[0]);
+    }
 
-    while (source.length > 0) { tmp.push(source.splice(mt.nextInt(source.length), 1)[0]); }
+    while (source.length > 0) {
+        tmp.push(source.splice(mt.nextInt(source.length), 1)[0]);
+    }
 
-    while (tmp.length > 0) { source.push(tmp.splice(mt.nextInt(tmp.length), 1)[0]); }
+    while (tmp.length > 0) {
+        source.push(tmp.splice(mt.nextInt(tmp.length), 1)[0]);
+    }
 }
 
 Game.hasPriorityUid = function (game, uid) {
@@ -25,8 +33,7 @@ Game.hasPriorityUid = function (game, uid) {
     var priority = game.priority;
 
     var i;
-    var len1 = priority.length;
-    for (i = 0; i < len1; i++) {
+    for (i = 0; i < priority.length; i++) {
         if (playerList[priority[i]].uid === uid) { return true; }
     }
 
@@ -50,8 +57,7 @@ Game.clear = function (game) {
     ];
 
     var i;
-    var len1 = playerList.length;
-    for (i = 0; i < len1; i++) {
+    for (i = 0; i < playerList.length; i++) {
         Player.clear(playerList[i]);
     }
 }
@@ -97,8 +103,7 @@ Game.deal = function (game, mt) {
     Game.suffle(deck, mt);
 
     var playerList = game.playerList;
-    var len1 = playerList.length;
-    for (i = 0; i < len1; i++) {
+    for (i = 0; i < playerList.length; i++) {
         Player.deal(playerList[i], deck);
     }
 }

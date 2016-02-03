@@ -32,9 +32,8 @@ Player.countPown = function (player) {
     var hand = player.hand;
 
     var count = 0;
-    var i;
-    var len1 = hand.length;
-    for (i = 0; i < len1; i++) {
+    var i;;
+    for (i = 0; i < hand.length; i++) {
         if (hand[i] === Card.POWN) {
             count++;
         }
@@ -48,8 +47,7 @@ Player.maxScoreCard = function (player) {
 
     var max = -1;
     var i;
-    var len1 = hand.length;
-    for (i = 0; i < len1; i++) {
+    for (i = 0; i < hand.length; i++) {
         if (CARD_SCORE[hand[i]] > CARD_SCORE[max]) {
             max = hand[i];
         }
