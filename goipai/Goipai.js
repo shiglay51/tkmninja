@@ -89,7 +89,6 @@ Goipai.prototype.finish = function () {
         );
     }
 
-
     game.active = Index.NONE;
     game.priority.length = 0;
 
@@ -123,18 +122,12 @@ Goipai.prototype.deal = function (uid) {
                 if (game.phase === Phase.FIVE_POWN) {
                     player.peeping = true;
 
-                    priority.length = 0;
-                    priority.push(0);
-                    priority.push(1);
-                    priority.push(2);
-                    priority.push(3);
-
                     game.score[i % 2] += 150;
 
                     this.chat('?', 'orange', '--手役--');
                     this.chat('?', FONT_COLOR[i], 'あがり「5し5し(150点)」');
 
-                    game.phase = Phase.PAUSE;
+                    this.finish();
                 } else {
                     player.peeping = true;
 
@@ -145,56 +138,77 @@ Goipai.prototype.deal = function (uid) {
                 }
                 break;
             case 6:
-                player.peeping = true;
-
-                priority.length = 0;
-                priority.push(0);
-                priority.push(1);
-                priority.push(2);
-                priority.push(3);
-
                 max = Player.maxScoreCard(player);
 
                 game.score[i % 2] += CARD_SCORE[max];
 
+                game.active = i;
+
                 this.chat('?', 'orange', '--手役--');
                 this.chat('?', FONT_COLOR[i], 'あがり「6し[' + CARD_NAME[max] + '](' + CARD_SCORE[max] + '点)」');
 
-                game.phase = Phase.PAUSE;
+                if (score[0] >= 150 || score[1] >= 150) {
+                    this.finish();
+                } else {
+                    player.peeping = true;
+
+                    priority.length = 0;
+                    priority.push(0);
+                    priority.push(1);
+                    priority.push(2);
+                    priority.push(3);
+
+                    game.phase = Phase.PAUSE;
+                    game.sound = Sound.GET;
+                }
                 break;
             case 7:
-                player.peeping = true;
-
-                priority.length = 0;
-                priority.push(0);
-                priority.push(1);
-                priority.push(2);
-                priority.push(3);
-
                 max = Player.maxScoreCard(player);
 
                 game.score[i % 2] += CARD_SCORE[max] * 2;
 
+                game.active = i;
+
                 this.chat('?', 'orange', '--手役--');
                 this.chat('?', FONT_COLOR[i], 'あがり「7し[' + CARD_NAME[max] + '](' + (CARD_SCORE[max] * 2) + '点)」');
 
-                game.phase = Phase.PAUSE;
+                if (score[0] >= 150 || score[1] >= 150) {
+                    this.finish();
+                } else {
+                    player.peeping = true;
+
+                    priority.length = 0;
+                    priority.push(0);
+                    priority.push(1);
+                    priority.push(2);
+                    priority.push(3);
+
+                    game.phase = Phase.PAUSE;
+                    game.sound = Sound.GET;
+                }
                 break;
             case 8:
-                player.peeping = true;
-
-                priority.length = 0;
-                priority.push(0);
-                priority.push(1);
-                priority.push(2);
-                priority.push(3);
-
                 game.score[i % 2] += 100;
+
+                game.active = i;
 
                 this.chat('?', 'orange', '--手役--');
                 this.chat('?', FONT_COLOR[i], 'あがり「8し(100点)」');
 
-                game.phase = Phase.PAUSE;
+                if (score[0] >= 150 || score[1] >= 150) {
+                    this.finish();
+                } else {
+                    player.peeping = true;
+
+                    priority.length = 0;
+                    priority.push(0);
+                    priority.push(1);
+                    priority.push(2);
+                    priority.push(3);
+
+                    game.phase = Phase.PAUSE;
+                    game.sound = Sound.GET;
+                }
                 break;
         }
     }
