@@ -129,7 +129,7 @@ Goipai.prototype.deal = function (uid) {
                     priority.push(2);
                     priority.push(3);
 
-                    game.score[i % 4] += 150;
+                    game.score[i % 2] += 150;
 
                     this.chat('?', 'orange', '--手役--');
                     this.chat('?', FONT_COLOR[i], 'あがり「5し5し(150点)」');
@@ -155,7 +155,7 @@ Goipai.prototype.deal = function (uid) {
 
                 max = Player.maxScoreCard(player);
 
-                game.score[i % 4] += CARD_SCORE[max];
+                game.score[i % 2] += CARD_SCORE[max];
 
                 this.chat('?', 'orange', '--手役--');
                 this.chat('?', FONT_COLOR[i], 'あがり「6し[' + CARD_NAME[max] + '](' + CARD_SCORE[max] + '点)」');
@@ -173,7 +173,7 @@ Goipai.prototype.deal = function (uid) {
 
                 max = Player.maxScoreCard(player);
 
-                game.score[i % 4] += CARD_SCORE[max] * 2;
+                game.score[i % 2] += CARD_SCORE[max] * 2;
 
                 this.chat('?', 'orange', '--手役--');
                 this.chat('?', FONT_COLOR[i], 'あがり「7し[' + CARD_NAME[max] + '](' + (CARD_SCORE[max] * 2) + '点)」');
@@ -189,7 +189,7 @@ Goipai.prototype.deal = function (uid) {
                 priority.push(2);
                 priority.push(3);
 
-                game.score[i % 4] += 100;
+                game.score[i % 2] += 100;
 
                 this.chat('?', 'orange', '--手役--');
                 this.chat('?', FONT_COLOR[i], 'あがり「8し(100点)」');
@@ -476,9 +476,8 @@ Goipai.prototype.onMessage = function (uid, message) {
                             that.chat('?', FONT_COLOR[priority[0]], chat);
 
                             var score = game.score;
-                            var color = priority[0] % 4;
 
-                            score[color] += point;
+                            score[priority[0] % 2] += point;
 
                             if (score[0] >= 150 || score[1] >= 150) {
                                 that.finish();
