@@ -464,27 +464,31 @@ Goipai.prototype.onMessage = function (uid, message) {
                             var priority = game.priority;
                             var player = game.playerList[priority[0]];
                             var hand = player.hand;
-                            var card = hand[0];
+                            var last = hand[0];
 
-                            player.offense.push(card);
+                            player.offense.push(last);
                             hand.splice(0, 1);
 
-                            var point = CARD_SCORE[card];
+                            var point = CARD_SCORE[last];
                             var defense = player.defense;
-                            var hidden = defense[defense.length - 1];
+                            var prev = defense[defense.length - 1];
+                            var hidden = player.hidden;
                             var chat;
 
                             if (
-                                   card === hidden
-                                || (
-                                          (card === Card.KING1 || card === Card.KING2)
-                                       && (hidden === Card.KING1 || hidden === Card.KING2)
-                                   )
+                                   hidden[hidden.length - 1]
+                                && (
+                                       last === prev
+                                    || (
+                                             (last === Card.KING1 || last === Card.KING2)
+                                          && (prev === Card.KING1 || prev === Card.KING2)
+                                    )
+                                )
                             ) {
                                 point *= 2;
-                                chat = 'あがり「' + CARD_NAME[card] + CARD_NAME[hidden] + '(' + point + '点)」';
+                                chat = 'あがり「' + CARD_NAME[last] + CARD_NAME[prev] + '(' + point + '点)」';
                             } else {
-                                chat = 'あがり「' + CARD_NAME[card] + '(' + point + '点)」';
+                                chat = 'あがり「' + CARD_NAME[last] + '(' + point + '点)」';
                             }
 
                             that.chat('?', FONT_COLOR[priority[0]], chat);
