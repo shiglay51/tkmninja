@@ -112,6 +112,7 @@ Goipai.prototype.deal = function (uid) {
     var playerList = game.playerList;
     var player;
     var max;
+    var score;
 
     var i;
     for (i = 0; i < playerList.length; i++) {
@@ -125,7 +126,7 @@ Goipai.prototype.deal = function (uid) {
                     game.score[i % 2] += 150;
 
                     this.chat('?', 'orange', '--手役--');
-                    this.chat('?', FONT_COLOR[i], 'あがり「5し5し(150点)」');
+                    this.chat('?', FONT_COLOR[i], 'あがり「五し五し(150点)」');
 
                     this.finish();
                 } else {
@@ -145,7 +146,9 @@ Goipai.prototype.deal = function (uid) {
                 game.active = i;
 
                 this.chat('?', 'orange', '--手役--');
-                this.chat('?', FONT_COLOR[i], 'あがり「6し[' + CARD_NAME[max] + '](' + CARD_SCORE[max] + '点)」');
+                this.chat('?', FONT_COLOR[i], 'あがり「六し[' + CARD_NAME[max] + '](' + CARD_SCORE[max] + '点)」');
+
+                score = game.socre;
 
                 if (score[0] >= 150 || score[1] >= 150) {
                     this.finish();
@@ -170,7 +173,9 @@ Goipai.prototype.deal = function (uid) {
                 game.active = i;
 
                 this.chat('?', 'orange', '--手役--');
-                this.chat('?', FONT_COLOR[i], 'あがり「7し[' + CARD_NAME[max] + '](' + (CARD_SCORE[max] * 2) + '点)」');
+                this.chat('?', FONT_COLOR[i], 'あがり「七し[' + CARD_NAME[max] + '](' + (CARD_SCORE[max] * 2) + '点)」');
+
+                score = game.socre;
 
                 if (score[0] >= 150 || score[1] >= 150) {
                     this.finish();
@@ -193,7 +198,9 @@ Goipai.prototype.deal = function (uid) {
                 game.active = i;
 
                 this.chat('?', 'orange', '--手役--');
-                this.chat('?', FONT_COLOR[i], 'あがり「8し(100点)」');
+                this.chat('?', FONT_COLOR[i], 'あがり「八し(100点)」');
+
+                score = game.socre;
 
                 if (score[0] >= 150 || score[1] >= 150) {
                     this.finish();
@@ -213,7 +220,7 @@ Goipai.prototype.deal = function (uid) {
         }
     }
 
-    var score = game.score;
+    score = game.score;
 
     if (score[0] >= 150 || score[1] >= 150) {
         this.finish();
@@ -226,9 +233,9 @@ Goipai.prototype.deal = function (uid) {
             );
         } else if (game.phase === Phase.FIVE_POWN) {
             this.chat(
-                '?'
+                  '?'
                 , 'orange'
-                , '--「5し」--'
+                , '--「五し」--'
             );
         }
     }
