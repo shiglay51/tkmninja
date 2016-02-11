@@ -112,7 +112,6 @@ Goipai.prototype.deal = function (uid) {
     var playerList = game.playerList;
     var player;
     var max;
-    var score;
 
     var i;
     for (i = 0; i < playerList.length; i++) {
@@ -127,8 +126,6 @@ Goipai.prototype.deal = function (uid) {
 
                     this.chat('?', 'orange', '--手役--');
                     this.chat('?', FONT_COLOR[i], 'あがり「五し五し(150点)」');
-
-                    this.finish();
                 } else {
                     player.peeping = true;
 
@@ -148,22 +145,16 @@ Goipai.prototype.deal = function (uid) {
                 this.chat('?', 'orange', '--手役--');
                 this.chat('?', FONT_COLOR[i], 'あがり「六し[' + CARD_NAME[max] + '](' + CARD_SCORE[max] + '点)」');
 
-                score = game.socre;
+                player.peeping = true;
 
-                if (score[0] >= 150 || score[1] >= 150) {
-                    this.finish();
-                } else {
-                    player.peeping = true;
+                priority.length = 0;
+                priority.push(0);
+                priority.push(1);
+                priority.push(2);
+                priority.push(3);
 
-                    priority.length = 0;
-                    priority.push(0);
-                    priority.push(1);
-                    priority.push(2);
-                    priority.push(3);
-
-                    game.phase = Phase.PAUSE;
-                    game.sound = Sound.GET;
-                }
+                game.phase = Phase.PAUSE;
+                game.sound = Sound.GET;
                 break;
             case 7:
                 max = Player.maxScoreCard(player);
@@ -175,22 +166,16 @@ Goipai.prototype.deal = function (uid) {
                 this.chat('?', 'orange', '--手役--');
                 this.chat('?', FONT_COLOR[i], 'あがり「七し[' + CARD_NAME[max] + '](' + (CARD_SCORE[max] * 2) + '点)」');
 
-                score = game.socre;
+                player.peeping = true;
 
-                if (score[0] >= 150 || score[1] >= 150) {
-                    this.finish();
-                } else {
-                    player.peeping = true;
+                priority.length = 0;
+                priority.push(0);
+                priority.push(1);
+                priority.push(2);
+                priority.push(3);
 
-                    priority.length = 0;
-                    priority.push(0);
-                    priority.push(1);
-                    priority.push(2);
-                    priority.push(3);
-
-                    game.phase = Phase.PAUSE;
-                    game.sound = Sound.GET;
-                }
+                game.phase = Phase.PAUSE;
+                game.sound = Sound.GET;
                 break;
             case 8:
                 game.score[i % 2] += 100;
@@ -200,27 +185,21 @@ Goipai.prototype.deal = function (uid) {
                 this.chat('?', 'orange', '--手役--');
                 this.chat('?', FONT_COLOR[i], 'あがり「八し(100点)」');
 
-                score = game.socre;
+                player.peeping = true;
 
-                if (score[0] >= 150 || score[1] >= 150) {
-                    this.finish();
-                } else {
-                    player.peeping = true;
+                priority.length = 0;
+                priority.push(0);
+                priority.push(1);
+                priority.push(2);
+                priority.push(3);
 
-                    priority.length = 0;
-                    priority.push(0);
-                    priority.push(1);
-                    priority.push(2);
-                    priority.push(3);
-
-                    game.phase = Phase.PAUSE;
-                    game.sound = Sound.GET;
-                }
+                game.phase = Phase.PAUSE;
+                game.sound = Sound.GET;
                 break;
         }
     }
 
-    score = game.score;
+    var score = game.score;
 
     if (score[0] >= 150 || score[1] >= 150) {
         this.finish();
