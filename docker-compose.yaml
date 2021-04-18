@@ -13,6 +13,7 @@ services:
     image: nginx
     ports:
         - "443:443"
+    restart: always
     environment:
         TZ: Asia/Tokyo
     volumes:
