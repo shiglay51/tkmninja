@@ -52,6 +52,7 @@ Game.clear = function (game) {
     game.dice1 = Index.NONE;
     game.dice2 = Index.NONE;
     game.landList = [];
+    game.diceHistory = [];
     
     var settlementList = game.settlementList = [];
     

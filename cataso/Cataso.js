@@ -1175,8 +1175,9 @@ Cataso.prototype.diceRoll = function () {
 
         game.dice1 = dice.first;
         game.dice2 = dice.seccond;
-
+        
         var dice = game.dice1 + game.dice2;
+        game.diceHistory.push(dice);
         
         this.chat(
               '?'
