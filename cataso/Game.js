@@ -88,6 +88,7 @@ Game.start = function (game, mt) {
     game.trade.playerIndex = Index.NONE;
     game.largestArmy = Index.NONE;
     game.longestRoad = Index.NONE;
+    game.diceHistory = [];
     
     var settlementList = game.settlementList;
 

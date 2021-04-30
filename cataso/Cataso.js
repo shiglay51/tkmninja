@@ -92,6 +92,7 @@ Cataso.prototype.onMessage = function (uid, message) {
     } else {
         if (this.game.state === State.READY) {
             switch (message[0]) {
+                // join the game (着席押下時)
                 case 'b':
                     (function (that) {
                         var game = that.game;
@@ -110,6 +111,7 @@ Cataso.prototype.onMessage = function (uid, message) {
                         }
                     })(this);
                     break;
+                // leave the game (離席押下時)
                 case 'c':
                     (function (that) {
                         var playerList = that.game.playerList;
@@ -123,6 +125,7 @@ Cataso.prototype.onMessage = function (uid, message) {
                         }
                     })(this);
                     break;
+                // start the game
                 case 'd':
                     (function (that) {
                         var game = that.game;
