@@ -579,6 +579,13 @@ Cataso.prototype.onMessage = function (uid, message) {
                                 } else {
                                     that.chat('?', FONT_COLOR[color], `「${player.uid}」は資源がありません`);
                                     player.trading = false;
+                                    if(game.playerList.every(p => p.trading === false)) {
+                                        var priority = game.priority;
+                                        priority.length = 0;
+                                        priority.push(active);
+            
+                                        that.game.phase = Phase.MAIN;
+                                    }
                                 }
 
                             }
