@@ -17,6 +17,7 @@ Player.clear = function (player) {
     player.sleepCard = [0, 0, 0, 0, 0];
     player.wakeCard = [0, 0, 0, 0, 0];
     player.deadCard = [0, 0, 0, 0, 0];
+    player.trading = false;
 }
 
 Player.start = function (player) {
@@ -27,6 +28,7 @@ Player.start = function (player) {
     player.settlementStock = 5;
     player.cityStock = 4;
     player.secondSettlement = Index.NONE;
+    player.trading = false;
     
     var harbor = player.harbor;
 

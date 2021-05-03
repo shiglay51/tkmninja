@@ -47,6 +47,7 @@ Const.Phase.ROAD_BUILDING2 = 18;
 Const.Phase.YEAR_OF_PLENTY1 = 19;
 Const.Phase.YEAR_OF_PLENTY2 = 20;
 Const.Phase.MONOPOLY = 21;
+Const.Phase.DOMESTIC_TRADE3 = 22;
 
 Const.Land = function () { }
 Const.Land.DESERT = -1;

@@ -539,6 +539,51 @@ Cataso.prototype.onMessage = function (uid, message) {
                     case 'u':
                         if (this.game.phase === Phase.MAIN) { this.game.phase = Phase.DOMESTIC_TRADE1; }
                         break;
+                    case 'N':
+                        (function (that) {
+                            var game = that.game;
+                            var param = that.split(message);
+                            var color = parseInt(param[0]);
+                            var player = game.playerList[color];
+                            var active = game.active;
+
+                            if (game.phase === Phase.DOMESTIC_TRADE3) {
+                                var trade = game.trade;
+                                var output = trade.output;
+                                var tradeResource = player.resource;
+
+                                if (
+                                       tradeResource[Resource.BRICK] >= output[Resource.BRICK]
+                                    && tradeResource[Resource.WOOL] >= output[Resource.WOOL]
+                                    && tradeResource[Resource.ORE] >= output[Resource.ORE]
+                                    && tradeResource[Resource.GRAIN] >= output[Resource.GRAIN]
+                                    && tradeResource[Resource.LUMBER] >= output[Resource.LUMBER]
+                                ) {
+                                    var activeResource = game.playerList[active].resource;
+                                    var input = trade.input;
+
+                                    var i;
+                                    for (i = 0; i < 5; i++) {
+                                        activeResource[i] -= input[i];
+                                        activeResource[i] += output[i];
+                                        tradeResource[i] += input[i];
+                                        tradeResource[i] -= output[i];
+                                    }
+                                    
+                                    that.chat('?', FONT_COLOR[color], `「${player.uid}」と交換しました。`);
+                                    var priority = game.priority;
+                                    priority.length = 0;
+                                    priority.push(active);
+    
+                                    that.game.phase = Phase.MAIN;
+                                } else {
+                                    that.chat('?', FONT_COLOR[color], `「${player.uid}」は資源がありません`);
+                                    player.trading = false;
+                                }
+
+                            }
+                        })(this);
+                        break;
                     case 'v':
                         (function (that) {
                             var game = that.game;
@@ -547,15 +592,25 @@ Cataso.prototype.onMessage = function (uid, message) {
                                 var param = that.split(message);
                                 var playerList = game.playerList;
                                 var trade = game.trade;
+                                var active = game.active;
                                 var playerIndex = trade.playerIndex = parseInt(param[0]);
 
-                                that.chat(
-                                      '?'
-                                    , FONT_COLOR[playerIndex]
-                                    , '国内貿易を申し込みました「'
-                                      + playerList[playerIndex].uid
-                                      + '(' + COLOR_NAME[playerIndex] + ')」'
-                                );
+                                if(playerIndex === 9) { // broadcast                                    
+                                    that.chat(
+                                          '?'
+                                        , 'pink'
+                                        , '国内貿易を申し込みました「all」'
+                                    );
+                                } else {
+                                    that.chat(
+                                          '?'
+                                        , FONT_COLOR[playerIndex]
+                                        , '国内貿易を申し込みました「'
+                                          + playerList[playerIndex].uid
+                                          + '(' + COLOR_NAME[playerIndex] + ')」'
+                                    );
+                                }
+
 
                                 var tmp = '';
                                 var inputSum = 0;
@@ -601,11 +656,23 @@ Cataso.prototype.onMessage = function (uid, message) {
                                         that.chat('?', 'deeppink', '偽装譲渡はできません。');
                                         game.phase = Phase.MAIN;
                                     } else {
-                                        var priority = game.priority;
-                                        priority.length = 0;
-                                        priority.push(playerIndex);
-
-                                        game.phase = Phase.DOMESTIC_TRADE2;
+                                        if(playerIndex === 9) {
+                                            var len1 = playerList.filter(p => p.uid !== '').length;
+                                            var priority = game.priority;
+                                            priority.length = 0;
+                                            for (var i = 0; i < len1; i++) {
+                                                if(i !== active) {
+                                                    priority.push(i);
+                                                    playerList[i].trading = true;
+                                                }
+                                            }
+                                            game.phase = Phase.DOMESTIC_TRADE3;
+                                        } else {
+                                            var priority = game.priority;
+                                            priority.length = 0;
+                                            priority.push(playerIndex);
+                                            game.phase = Phase.DOMESTIC_TRADE2;
+                                        }
                                     }
                                 }
                             }
@@ -666,6 +733,34 @@ Cataso.prototype.onMessage = function (uid, message) {
 
                                 that.game.phase = Phase.MAIN;
                             }
+                        })(this);
+                        break;
+                    case 'O':
+                        (function (that) {
+                            var game = that.game;
+                            var param = that.split(message);
+                            var color = parseInt(param[0]);
+                            var player = game.playerList[color];
+                            var active = game.active;
+                            var priority = game.priority;
+
+                            if (game.phase === Phase.DOMESTIC_TRADE3) {
+                                that.chat('?', FONT_COLOR[color], `「${player.uid}」に拒否されました。`);
+                                var i;
+                                var len1 = priority.length;
+                                for (i = 0; i < len1; i++) {
+                                    if (priority[i] === color) { priority.splice(i, 1); }
+                                }
+                                
+                                player.trading = false;
+                                if(game.playerList.every(p => p.trading === false)) {
+                                    priority.length = 0;
+                                    priority.push(active);
+        
+                                    that.game.phase = Phase.MAIN;
+                                }
+                            }
+
                         })(this);
                         break;
                     case 'y':
