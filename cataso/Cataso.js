@@ -574,6 +574,7 @@ Cataso.prototype.onMessage = function (uid, message) {
                                     var priority = game.priority;
                                     priority.length = 0;
                                     priority.push(active);
+                                    game.playerList.forEach(p => p.trading = false);
     
                                     that.game.phase = Phase.MAIN;
                                 } else {
@@ -778,6 +779,7 @@ Cataso.prototype.onMessage = function (uid, message) {
                                 that.chat('?', 'deeppink', `貿易キャンセル`);
                                 priority.length = 0;
                                 priority.push(active);
+                                that.game.playerList.forEach(p => p.trading = false);
     
                                 that.game.phase = Phase.MAIN;
                             }
