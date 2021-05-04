@@ -668,8 +668,8 @@ Cataso.prototype.onMessage = function (uid, message) {
                                             var priority = game.priority;
                                             priority.length = 0;
                                             for (var i = 0; i < len1; i++) {
-                                                if(i !== active) {
-                                                    priority.push(i);
+                                                priority.push(i);
+                                                if (i !== active) {
                                                     playerList[i].trading = true;
                                                 }
                                             }
@@ -768,6 +768,19 @@ Cataso.prototype.onMessage = function (uid, message) {
                                 }
                             }
 
+                        })(this);
+                        break;
+                    case 'P': // キャンセル
+                        (function (that) {
+                            if (that.game.phase === Phase.DOMESTIC_TRADE3) {
+                                var priority = that.game.priority;
+                                var active = that.game.active;
+                                that.chat('?', 'deeppink', `貿易キャンセル`);
+                                priority.length = 0;
+                                priority.push(active);
+    
+                                that.game.phase = Phase.MAIN;
+                            }
                         })(this);
                         break;
                     case 'y':
