@@ -433,6 +433,12 @@ Game.buildSettlement = function (game, index) {
     }
 }
 
+Game.isHataTriangle = function (game, index) {
+    var active = game.active;
+    var tri = Const.HATA_TRI.map(ht => ht.filter(t => t === index));
+    return tri.some(t => t.every(i => (game.settlementList[i] & '0xF') ===  active));
+}
+
 Game.buildRoad = function (game, index) {
     var active = game.active;
     

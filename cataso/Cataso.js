@@ -482,6 +482,8 @@ Cataso.prototype.onMessage = function (uid, message) {
                                     );
                                     
                                     game.sound = Sound.GET;
+                                } else if (Game.isHataTriangle(game, index)) {
+                                    game.sound = Sound.HATA;
                                 } else {
                                     game.sound = Sound.BUILD;
                                 }
