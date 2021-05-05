@@ -169,6 +169,15 @@ Cataso.prototype.onMessage = function (uid, message) {
                                 case Phase.INTERNATIONAL_TRADE:
                                     game.phase = Phase.MAIN;
                                     break;
+                                case Phase.DOMESTIC_TRADE3:
+                                    var priority = that.game.priority;
+                                    var active = that.game.active;
+                                    that.chat('?', 'deeppink', `貿易キャンセル`);
+                                    priority.length = 0;
+                                    priority.push(active);
+                                    game.playerList.forEach(p => p.trading = false);
+        
+                                    game.phase = Phase.MAIN;
                             }
                         })(this);
                         break;
@@ -771,20 +780,6 @@ Cataso.prototype.onMessage = function (uid, message) {
                                 }
                             }
 
-                        })(this);
-                        break;
-                    case 'P': // キャンセル
-                        (function (that) {
-                            if (that.game.phase === Phase.DOMESTIC_TRADE3) {
-                                var priority = that.game.priority;
-                                var active = that.game.active;
-                                that.chat('?', 'deeppink', `貿易キャンセル`);
-                                priority.length = 0;
-                                priority.push(active);
-                                that.game.playerList.forEach(p => p.trading = false);
-    
-                                that.game.phase = Phase.MAIN;
-                            }
                         })(this);
                         break;
                     case 'y':
