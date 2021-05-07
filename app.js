@@ -33,6 +33,7 @@ var roomList = [
     , new BattleRaiso()
     , new Goipai()
     , new Goipai()
+    , new Cataso()
 ];
 
 var User = function (ws, uid, trip) {
