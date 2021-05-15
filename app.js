@@ -4,6 +4,7 @@ var server = http.createServer();
 var crypto = require('crypto');
 var MersenneTwister = require('./MersenneTwister');
 var Cataso = require('./cataso/Cataso');
+var Kcataso = require('./kcataso/Kcataso');
 var BattleRaiso = require('./battleraiso/BattleRaiso');
 var Goipai = require('./goipai/Goipai');
 
@@ -34,6 +35,7 @@ var roomList = [
     , new Goipai()
     , new Goipai()
     , new Cataso()
+    , new Kcataso()
 ];
 
 var User = function (ws, uid, trip) {
