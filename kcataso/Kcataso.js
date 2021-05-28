@@ -370,11 +370,12 @@ Kcataso.prototype.onMessage = function (uid, message) {
                                     
                                     if (priority.length === 0) {
                                         priority.push(game.active);
-                                        if(game.phase === Phase.SABOTEUR || Phase.WEDDING) {
+                                        if(game.phase === Phase.SABOTEUR || game.phase === Phase.WEDDING) {
                                             game.phase = Phase.MAIN;
                                         } else if (game.phase === Phase.BURST) {
                                             if(game.isBarbarianArrivedOnce) {
                                                 game.phase = Phase.ROBBER1;
+                                                game.sound = Sound.ROBBER;
                                             } else {
                                                 game.phase = Phase.MAIN;
                                             }
