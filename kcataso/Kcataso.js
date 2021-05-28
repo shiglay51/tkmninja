@@ -282,7 +282,7 @@ Kcataso.prototype.onMessage = function (uid, message) {
                                         var len2 = LAND_LINK[i].length;
                                         for (j = 0; j < len2; j++) {
                                             if (LAND_LINK[i][j] === secondSettlement) {
-                                                Game.gainResourceCity(game, active, landList[i]);
+                                                Game.gainResource(game, active, landList[i], 1);
                                             }
                                         }
                                     }
