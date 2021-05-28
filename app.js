@@ -9,16 +9,17 @@ var BattleRaiso = require('./battleraiso/BattleRaiso');
 var Goipai = require('./goipai/Goipai');
 
 var roomList = [
-      new Cataso()
-    , new Cataso()
-    , new Cataso()
-    , new BattleRaiso()
+      new Cataso()               // 0
+    , new Cataso()               
+    , new Cataso()               
+    , new BattleRaiso()               
     , new Goipai()
     , new Cataso()
     , new Cataso()
     , new Cataso()
     , new Cataso()
     , new Cataso()
+    , new Cataso()                 // 10
     , new Cataso()
     , new Cataso()
     , new Cataso()
@@ -28,14 +29,17 @@ var roomList = [
     , new Cataso()
     , new Cataso()
     , new Cataso()
-    , new Cataso()
-    , new BattleRaiso()
+    , new BattleRaiso()            // 20
     , new BattleRaiso()
     , new BattleRaiso()
     , new Goipai()
     , new Goipai()
     , new Cataso()
     , new Kcataso()
+    , new Kcataso()
+    , new Kcataso()
+    , new Kcataso()
+    , new Kcataso()                 // 30
 ];
 
 var User = function (ws, uid, trip) {
