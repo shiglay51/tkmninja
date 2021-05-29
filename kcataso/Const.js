@@ -96,6 +96,7 @@ Const.Phase.MERCHANT_FLEET = 66;
 Const.Phase.RESOURCE_MONOPOLY = 67;
 Const.Phase.TRADE_MONOPOLY = 68;
 Const.Phase.MERCHANT = 69;
+Const.Phase.CHOICE_PILLAGED_METROPOLIS = 70;
 
 Const.Land = function () { }
 Const.Land.DESERT = -1;

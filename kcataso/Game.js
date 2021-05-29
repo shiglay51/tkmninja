@@ -825,8 +825,8 @@ Game.buildMetropolis = function (game, index, type) {
     
     game.settlementList[index] = SettlementRank.METROPOLIS | active;
     game.metropolisStock[type]--;
-    playerList[active].cityStock++;
-    playerList[active].metropolisIndex[type] = index;
+    // playerList[active].cityStock++;
+    playerList[active].metropolisIndex[type] = 1;
     playerList[active].baseScore += 2;
 }
 Game.buildCityWall = function (game, index) {
@@ -837,10 +837,10 @@ Game.buildCityWall = function (game, index) {
     playerList[active].burstThreshold += 2;
 }
 
-Game.pillageMetropolis = function (game, player, type) {
+Game.pillageMetropolis = function (game, player, index, type) {
     var playerList = game.playerList;
-    game.settlementList[playerList[player].metropolisIndex[type]] = SettlementRank.CITY | player;
-    playerList[player].cityStock--;
+    game.settlementList[index] = SettlementRank.CITY | player;
+    // playerList[player].cityStock--;
     playerList[player].metropolisIndex[type] = Index.NONE;
     playerList[player].baseScore -= 2;
 }

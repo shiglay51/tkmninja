@@ -880,9 +880,20 @@ Kcataso.prototype.onMessage = function (uid, message) {
                                 that.game.selectingDevelopmentType = type;
                                 that.game.phase = Phase.BUILD_METROPOLIS;
                             } else { // メトロポリスを奪える
-                                Game.pillageMetropolis(game, pillagedPlayer, type);
                                 that.game.selectingDevelopmentType = type;
-                                that.game.phase = Phase.BUILD_METROPOLIS;
+                                if(that.game.playerList[pillagedPlayer].metropolisIndex.filter(i => i !== Index.NONE).length > 1) {
+                                    // 奪われるメトロポリスを選択するフェーズ
+                                    that.game.priority.length = 0;
+                                    that.game.priority.push(pillagedPlayer);
+                                    that.game.phase = Phase.CHOICE_PILLAGED_METROPOLIS;
+                                    that.game.sound = Sound.ROBBER;
+                                } else {
+                                    let idx = that.game.settlementList.findIndex(s => {
+                                        return (s & 0xff00) === SettlementRank.METROPOLIS && (s & 0x00ff) === pillagedPlayer;
+                                    });
+                                    Game.pillageMetropolis(game, pillagedPlayer, idx, type);
+                                    that.game.phase = Phase.BUILD_METROPOLIS;
+                                }
                             }
                         }
                     })(this);                    
@@ -1079,6 +1090,20 @@ Kcataso.prototype.onMessage = function (uid, message) {
                                     Game.buildMetropolis(game, index, game.selectingDevelopmentType);
                                     game.phase = Phase.MAIN;
                                     game.sound = Sound.GET;
+                                })(this);
+                                break;
+                            case Phase.CHOICE_PILLAGED_METROPOLIS:
+                                (function (that) {
+                                    var game = that.game;
+        
+                                    that.chat('?', 'deeppink', 'メトロポリスを奪いました。');
+    
+                                    var index = that.split(message)[0];
+                                    Game.pillageMetropolis(game, game.priority[0], index, game.selectingDevelopmentType);
+                                    game.priority.length = 0;
+                                    game.priority.push(game.active);
+                                    game.phase = Phase.BUILD_METROPOLIS;
+                                    game.sound = Sound.BUILD;
                                 })(this);
                                 break;
                             case Phase.BUILD_CITYWALL:
