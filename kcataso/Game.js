@@ -80,6 +80,9 @@ Game.clear = function (game) {
     
     var settlementList = game.settlementList = [];
     for (let i = 0; i < 54; i++) { settlementList.push(SettlementRank.NONE | 0x00ff); }
+
+    var tmpSettlementList = game.tmpSettlementList = [];
+    for (let i = 0; i < 54; i++) { tmpSettlementList.push(Index.NONE); }
     
     var roadList = game.roadList = [];
     for (let i = 0; i < 72; i++) { roadList.push(Index.NONE); }
@@ -157,6 +160,12 @@ Game.start = function (game, mt) {
 
     len1 = cityWallList.length;
     for (i = 0; i < len1; i++) { cityWallList[i] = 0xff; }
+
+
+    var tmpSettlementList = game.tmpSettlementList;
+
+    len1 = tmpSettlementList.length;
+    for (i = 0; i < len1; i++) { tmpSettlementList[i] = Index.NONE; }
     
     game.active = 0;
     game.priority.length = 0;
@@ -813,10 +822,13 @@ Game.buildRoad = function (game, index) {
 Game.buildCity = function (game, index) {
     var active = game.active;
     var playerList = game.playerList;
-    
+    if(game.tmpSettlementList[index] === game.active) {
+        game.tmpSettlementList[index] = Index.NONE;
+    } else {
+        playerList[active].cityStock--;
+        playerList[active].settlementStock++;
+    }    
     game.settlementList[index] = SettlementRank.CITY | active;
-    playerList[active].cityStock--;
-    playerList[active].settlementStock++;
     playerList[active].baseScore++;
 }
 Game.buildMetropolis = function (game, index, type) {
@@ -848,8 +860,12 @@ Game.pillageMetropolis = function (game, player, index, type) {
 Game.pillageCity = function (game, index, player) {
     var playerList = game.playerList;
     game.settlementList[index] = SettlementRank.SETTLEMENT | player;
-    playerList[player].cityStock++;
-    playerList[player].settlementStock--;
+    if(playerList[player].settlementStock > 0) {
+        playerList[player].cityStock++;
+        playerList[player].settlementStock--;
+    } else { // 家の在庫がない場合
+        game.tmpSettlementList[index] = player;
+    }
     playerList[player].baseScore--;
     
     if(game.cityWallList[index] === player) {
