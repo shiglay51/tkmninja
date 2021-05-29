@@ -2173,6 +2173,8 @@ Kcataso.prototype.diceRoll = function () {
         
         var diceSum = game.dice1 + game.dice2;
         game.diceHistory.push(diceSum);
+        var eventType = game.event - 3;
+        game.eventHistory.push(Math.max(0, eventType));
         
         this.chat(
             '?'

@@ -34,7 +34,7 @@ Dice.roll = function(dice) {
     dice.first = dice.reel[dice.seek];
     dice.seccond = dice.reel[dice.reel.length - (dice.seek + 1)];
     // dice.event = Math.floor( Math.random() * 6 ) + 1;
-    dice.event = dice.mt.nextInt(1, 6);
+    dice.event = dice.mt.nextInt(1, 7);
 
     dice.seek++;
 }

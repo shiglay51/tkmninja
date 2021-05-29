@@ -76,6 +76,7 @@ Game.clear = function (game) {
     game.event = Index.NONE;
     game.landList = [];
     game.diceHistory = [];
+    game.eventHistory = [];
     game.commercialHarborDone = [];
     
     var settlementList = game.settlementList = [];
@@ -124,6 +125,7 @@ Game.start = function (game, mt) {
     game.selectingKnight = Index.NONE;
     game.attackedKnight = KnightRank.NONE;
     game.diceHistory = [];
+    game.eventHistory = [];
     game.strongestKnightsPlayer = [];
     game.weakestKnightsPlayer = [];
     game.noGainPlayer = [];
