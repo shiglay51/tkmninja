@@ -377,7 +377,7 @@ Kcataso.prototype.onMessage = function (uid, message) {
                                                 game.phase = Phase.ROBBER1;
                                                 game.sound = Sound.ROBBER;
                                             } else {
-                                                game.phase = Phase.MAIN;
+                                                that.discardCardActionOrMain();
                                             }
                                         }
                                     }
@@ -426,7 +426,8 @@ Kcataso.prototype.onMessage = function (uid, message) {
                                         game.phase = Phase.SOLDIER2;
                                     }
                                 } else {
-                                    game.phase = Phase.MAIN;
+                                    // check card here.
+                                    that.discardCardActionOrMain();
                                 }
 
                                 game.sound = Sound.BUILD;
@@ -467,7 +468,8 @@ Kcataso.prototype.onMessage = function (uid, message) {
                                 loseResource[i]--;
                                 game.playerList[game.active].resource[i]++;
                                 
-                                game.phase = Phase.MAIN;
+                                // check card here.
+                                that.discardCardActionOrMain();
                                 game.sound = Sound.BUILD;
                             }
                         })(this);
@@ -833,11 +835,11 @@ Kcataso.prototype.onMessage = function (uid, message) {
                             var game = that.game;
 
                             if (game.phase === Phase.MAIN) {
-                                const needDiscard = that.discardCardAction();
-                                if(needDiscard) {
-                                    return;
+                                if(game.playerList[game.active].progressCard.length > 4) {
+                                    game.phase = Phase.DISCARD_CARD;
+                                } else {
+                                    that.goToNextPlayer();
                                 }
-                                that.goToNextPlayer();
                             }
                         })(this);
                         break;
@@ -1517,7 +1519,7 @@ Kcataso.prototype.onMessage = function (uid, message) {
                                 } else {
                                     game.priority.length = 0;
                                     game.priority.push(game.active);
-                                    game.phase = Phase.MAIN;
+                                    that.discardCardActionOrMain();
                                 }
                                 game.sound = Sound.BUILD;
                             }
@@ -1541,7 +1543,7 @@ Kcataso.prototype.onMessage = function (uid, message) {
                         (function (that) {
                             var game = that.game;
 
-                            if (game.phase === Phase.DISCARD_CARD) {
+                            if (game.phase === Phase.DISCARD_CARD || game.phase === Phase.DISCARD_CARD_OTHER) {
                                 var index = that.split(message)[0];
                                 var discardedCard = game.playerList[game.priority[0]].progressCard[index];
 
@@ -1557,7 +1559,13 @@ Kcataso.prototype.onMessage = function (uid, message) {
                                     game.priority.length = 0;
                                     game.priority.push(game.needDiscardCardPlayer.shift());
                                 } else {
-                                    that.goToNextPlayer();
+                                    if(game.phase === Phase.DISCARD_CARD) {
+                                        that.goToNextPlayer();
+                                    } else {
+                                        game.priority.length = 0;
+                                        game.priority.push(game.active);
+                                        game.phase = Phase.MAIN;
+                                    }
                                 }
                             }
                         })(this);
@@ -2007,7 +2015,8 @@ Kcataso.prototype.proceedDiceAction = function () {
                 game.phase = Phase.ROBBER1;
                 game.sound = Sound.ROBBER;
             } else {
-                game.phase = Phase.MAIN;
+                // check card here.
+                this.discardCardActionOrMain();
             }
         }
     } else {
@@ -2138,7 +2147,8 @@ Kcataso.prototype.proceedDiceAction = function () {
             game.priority.push(game.noGainPlayer.shift());
             game.phase = Phase.GAIN_RESOURCE;
         } else {
-            game.phase = Phase.MAIN;
+            // check card here.
+            this.discardCardActionOrMain();
         }
         
         game.sound = Sound.DICE;
@@ -2283,7 +2293,7 @@ Kcataso.prototype.goToNextPlayer = function () {
 
 }
 
-Kcataso.prototype.discardCardAction = function () {
+Kcataso.prototype.discardCardActionOrMain = function () {
     let game = this.game;
     game.needDiscardCardPlayer = game.playerList.map((p, i) => {
                                     return {
@@ -2291,6 +2301,7 @@ Kcataso.prototype.discardCardAction = function () {
                                         index: i
                                     };
                                 })
+                                .filter(p => p.index !== game.active)
                                 .filter(p => p.card.length > 4)
                                 .map(p => p.index)
                                 .sort((a , b) => {
@@ -2307,10 +2318,9 @@ Kcataso.prototype.discardCardAction = function () {
     if(game.needDiscardCardPlayer.length !== 0) {
         game.priority.length = 0;
         game.priority.push(game.needDiscardCardPlayer.shift());
-        game.phase = Phase.DISCARD_CARD;
-        return true;
+        game.phase = Phase.DISCARD_CARD_OTHER;
     } else {
-        return false;
+        game.phase = Phase.MAIN;
     }
 }
 
