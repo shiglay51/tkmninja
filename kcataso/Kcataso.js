@@ -206,6 +206,20 @@ Kcataso.prototype.onMessage = function (uid, message) {
                                 case Phase.ALCHEMIST:
                                     game.phase = Phase.DICE;
                                     break;
+                                case Phase.DIPLOMAT2: // 外交官の再配置をキャンセルした場合に道賞の計算が必要
+                                    var i = Game.longestRoad(game);
+
+                                    if (i !== Index.NONE) {
+                                        that.chat(
+                                            '?'
+                                          , FONT_COLOR[i]
+                                          , '**' + game.playerList[i].uid + '(' + COLOR_NAME[i] + ')が道賞を獲得しました**'
+                                        );
+                                        
+                                        game.sound = Sound.GET;
+                                    }
+                                    game.phase = Phase.MAIN;
+                                    break;
                                 default:
                                     game.phase = Phase.MAIN;
                                     break;
@@ -1213,12 +1227,25 @@ Kcataso.prototype.onMessage = function (uid, message) {
                                     game.playerList[color].roadStock++;
                                     game.roadList[index] = Index.NONE;
                                     Game.discardCard(game, game.active, Card.DIPLOMAT);
-                                    if(color === game.active) {
+                                    if(color === game.active) { // 自分の道を奪った場合
                                         game.phase = Phase.DIPLOMAT2;
-                                    } else {
+                                        game.sound = Sound.BUILD;
+                                    } else { // 人の道を奪った場合
+                                        var i = Game.longestRoad(game);
+
+                                        if (i !== Index.NONE) {
+                                            that.chat(
+                                                '?'
+                                              , FONT_COLOR[i]
+                                              , '**' + game.playerList[i].uid + '(' + COLOR_NAME[i] + ')が道賞を獲得しました**'
+                                            );
+                                            
+                                            game.sound = Sound.GET;
+                                        } else {
+                                            game.sound = Sound.ROBBER;
+                                        }
                                         game.phase = Phase.MAIN;
                                     }
-                                    game.sound = Sound.ROBBER;
                                 })(this);
                                 break;
                             case Phase.INTRIGUE:
