@@ -363,13 +363,21 @@ Game.longestRoad = function (game) {
         }
     } else {
         if (longestRoad === Index.NONE) {
-            game.longestRoad = max;
-            playerList[max].bonusScore += 2;
-        } else if (max !== longestRoad && sizeList[max] > sizeList[longestRoad]) {
+            if (sizeList.filter(size => size === sizeList[max]).length === 1) { // 誰も取っていない状態から、単独1位であれば道賞獲得
+                game.longestRoad = max;
+                playerList[max].bonusScore += 2;
+            } else { // 誰も取ってない状態から、同率1位の場合は道賞は移動しない
+                max = Index.NONE;
+            }
+        } else if (max !== longestRoad && sizeList[max] > sizeList[longestRoad] && sizeList.filter(size => size === sizeList[max]).length === 1) { // 誰かが取っている状態で、距離をまくって、単独首位の場合、道賞移動する
             playerList[longestRoad].bonusScore -= 2;
             game.longestRoad = max;
             playerList[max].bonusScore += 2;
-        } else {
+        } else if (max !== longestRoad && sizeList[max] > sizeList[longestRoad]) { // 誰かが取っている状態で、距離をまくったが、単独首位ではない場合、道賞が空位になる
+            playerList[longestRoad].bonusScore -= 2;
+            game.longestRoad = Index.NONE;
+            max = Index.NONE;
+        } else {  // 誰かが取っている状態でも、距離をまくれなかった場合は道賞は移動しない
             max = Index.NONE;
         }
     }
