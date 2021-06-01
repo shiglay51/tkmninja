@@ -430,7 +430,7 @@ Kcataso.prototype.onMessage = function (uid, message) {
                                     }
                                 }
                                 if(game.phase === Phase.BISHOP) {
-                                    Game.discardCard(game, game.active);
+                                    Game.discardCard(game, game.active, Card.BISHOP);
                                     that.pillageAll(game, robber);
                                     game.phase = Phase.MAIN;
                                 } else if (canPillage) {
