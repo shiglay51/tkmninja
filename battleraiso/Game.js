@@ -51,7 +51,7 @@ Game.start = function (game, mt) {
     var size = game.size;
     var weather = game.weather;
 
-    flagList.length = size.length = weather.length = stock.length = 0;
+    flagList.length = size.length = weather.length = 0;
     for (i = 0; i < 9; i++) {
         flagList.push(Index.NONE);
         size.push(3);
