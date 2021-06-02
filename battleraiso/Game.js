@@ -8,7 +8,7 @@ var Mode = Const.Mode;
 var Game = function () { }
 
 Game.clear = function (game) {
-    game.setup = Mode.BASIC;
+    game.setup = Mode.ADVANCE;
     game.state = State.READY;
     game.sound = '';
     game.phase = Phase.NONE;
