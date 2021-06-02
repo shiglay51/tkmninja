@@ -3,12 +3,23 @@ var Room = function () { }
 Room.prototype.symbol = null;
 Room.prototype.userList = null;
 Room.prototype.owner = null;
+Room.prototype.watchDogTimer = null;
 
 Room.prototype.initialize = function (symbol) {
     this.symbol = symbol;
     this.userList = [];
     this.owner = null;
     this.isPlaying = false;
+}
+
+Room.prototype.resetWatchDog = function() {
+    if(this.watchDogTimer) {
+        clearTimeout(this.watchDogTimer);
+    }
+    this.watchDogTimer = setTimeout(() => {
+        this.owner = null;
+        this._broadcast('G');
+    }, 1000 * 60 * 60 /* 1 hour */);   
 }
 
 Room.prototype.removeUser = function (user) {
@@ -64,6 +75,7 @@ Room.prototype._broadcast = function (message) {
 }
 
 Room.prototype.broadcast = function (message) {
+    this.resetWatchDog();
     this._broadcast('I' + message);
 }
 
@@ -91,6 +103,7 @@ Room.prototype.basicCommand = function (user, message) {
             if (this.owner === null) {
                 this.owner = user;
                 this._broadcast('F' + user.uid);
+                this.resetWatchDog();
 
                 this.chat('?', 'deeppink', user.uid + 'が管理者を取得しました。');
             } else {
