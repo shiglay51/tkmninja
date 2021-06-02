@@ -12,6 +12,10 @@ Const.Sound.OPENING = 7;
 Const.Sound.PASS = 8;
 Const.Sound.ROBBER = 9;
 
+Const.Mode = function () {}
+Const.Mode.BASIC = 0;
+Const.Mode.ADVANCE = 1;
+
 Const.State = function () { }
 Const.State.READY = 0;
 Const.State.PLAYING = 1;

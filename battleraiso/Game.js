@@ -3,10 +3,12 @@ var Const = require('./Const');
 var Index = Const.Index;
 var State = Const.State;
 var Phase = Const.Phase;
+var Mode = Const.Mode;
 
 var Game = function () { }
 
 Game.clear = function (game) {
+    game.setup = Mode.BASIC;
     game.state = State.READY;
     game.sound = '';
     game.phase = Phase.NONE;

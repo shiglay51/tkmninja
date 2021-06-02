@@ -7,6 +7,7 @@ var Phase = Const.Phase;
 var Sound = Const.Sound;
 var Index = Const.Index;
 var Card = Const.Card;
+var Mode = Const.Mode;
 var Tactics = Const.Tactics;
 var FONT_COLOR = Const.FONT_COLOR;
 var COLOR_NAME = Const.COLOR_NAME;
@@ -36,6 +37,35 @@ BattleRaiso.prototype.reset = function () {
 
 BattleRaiso.prototype.onCommand = function (user, message) {
     this.basicCommand(user, message);
+}
+
+BattleRaiso.prototype.onCommand = function (user, message) {
+    this.basicCommand(user, message);
+
+    switch (message[0]) {
+        case '/basic':
+            if (this.isPlaying) {
+                this.chat('?', 'deeppink', 'プレイ中には変更できません。');
+            } else {
+                this.game.setup = Mode.BASIC;
+
+                this.chat('?', 'deeppink', 'ベーシックモードに変更しました。');
+
+                this.broadcast(JSON.stringify(this.game));
+            }
+            break;
+        case '/advance':
+            if (this.isPlaying) {
+                this.chat('?', 'deeppink', 'プレイ中には変更できません。');
+            } else {
+                this.game.setup = Mode.ADVANCE;
+
+                this.chat('?', 'deeppink', 'アドバンスモードに変更しました。');
+
+                this.broadcast(JSON.stringify(this.game));
+            }
+            break;
+    }
 }
 
 BattleRaiso.prototype.onChat = function (user, message) {
@@ -136,6 +166,7 @@ BattleRaiso.prototype.onMessage = function (uid, message) {
                             || game.phase === Phase.REDEPLOY1
                             || game.phase === Phase.DESERTER
                             || game.phase === Phase.TRAITOR1
+                            || game.phase === Phase.DRAW
                         ) {
                             var index = parseInt(that.split(message)[0]);
 
