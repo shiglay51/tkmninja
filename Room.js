@@ -4,12 +4,14 @@ Room.prototype.symbol = null;
 Room.prototype.userList = null;
 Room.prototype.owner = null;
 Room.prototype.watchDogTimer = null;
+Room.prototype.chatCount = {};
 
 Room.prototype.initialize = function (symbol) {
     this.symbol = symbol;
     this.userList = [];
     this.owner = null;
     this.isPlaying = false;
+    this.chatCount = {};
 }
 
 Room.prototype.resetWatchDog = function() {
@@ -20,6 +22,27 @@ Room.prototype.resetWatchDog = function() {
         this.owner = null;
         this._broadcast('G');
     }, 1000 * 60 * 60 /* 1 hour */);   
+}
+
+Room.prototype.resetChatCount = function(uid) {
+    var user = this.userList.find(u => u.uid === uid);
+    if(!user) {
+        return;
+    }
+    if(!this.chatCount[uid] || this.chatCount[uid].count === 0) {
+        this.chatCount[uid] = {
+            count: 0,
+            timer: null
+        }
+    }
+    if(this.chatCount[uid].timer === null) {
+        this.chatCount[uid].timer = setTimeout(() => {
+            this.chatCount[uid].count = 0;
+            this.chatCount[uid].timer = null;
+            delete this.chatCount[uid];
+        }, 5000);
+    }
+    this.chatCount[uid].count++;
 }
 
 Room.prototype.removeUser = function (user) {
@@ -80,6 +103,16 @@ Room.prototype.broadcast = function (message) {
 }
 
 Room.prototype.chat = function (uid, color, message) {
+    this.resetChatCount(uid);
+    var user = this.userList.find(u => u.uid === uid);
+    if(user && this.chatCount[uid] && this.chatCount[uid].count > 5) {
+        this.removeUser(user);
+        this.chat('?', 'deeppink', uid + 'を追放しました。');
+    }
+
+    if(message.length > 140) {
+        message = message.substr(0, 140) + '…';
+    }
     this._broadcast('H' + uid + ' ' + color + ' ' + message);
 }
 
