@@ -97,8 +97,10 @@ Room.prototype._broadcast = function (message) {
     for (i = 0; i < len1; i++) { this._unicast(this.userList[i], message); }
 }
 
-Room.prototype.broadcast = function (message) {
-    this.resetWatchDog();
+Room.prototype.broadcast = function (message, resetWatchDog = true) {
+    if(resetWatchDog) {
+        this.resetWatchDog();
+    }
     this._broadcast('I' + message);
 }
 

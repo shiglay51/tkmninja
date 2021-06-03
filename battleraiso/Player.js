@@ -6,6 +6,7 @@ Player.clear = function (player) {
     player.talon = [];
     player.count = 0;
     player.leader = 0;
+    player.time = 0;
     player.field = [ [], [], [], [], [], [], [], [], [] ];
 }
 
@@ -14,6 +15,7 @@ Player.start = function (player) {
     player.talon.length = 0;
     player.count = 0;
     player.leader = 0;
+    player.time = 0;
     player.field = [ [], [], [], [], [], [], [], [], [] ];
 }
 

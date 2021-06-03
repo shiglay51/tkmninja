@@ -17,6 +17,8 @@ var BattleRaiso = function () {
 
     this.game = new Game();
     this.mt = new MersenneTwister();
+    this.timer = null;
+    this.clockTimer = null;
 
     Game.clear(this.game);
 }
@@ -29,14 +31,18 @@ BattleRaiso.prototype.split = function (source) {
 
 BattleRaiso.prototype.reset = function () {
     this.isPlaying = false;
+    if(this.clockTimer) {
+        clearInterval(this.clockTimer);
+        this.clockTimer = null;
+    }
+    if(this.timer) {
+        clearInterval(this.timer);
+        this.timer = null;
+    }
 
     Game.clear(this.game);
 
     this.broadcast(JSON.stringify(this.game));
-}
-
-BattleRaiso.prototype.onCommand = function (user, message) {
-    this.basicCommand(user, message);
 }
 
 BattleRaiso.prototype.onCommand = function (user, message) {
@@ -136,6 +142,8 @@ BattleRaiso.prototype.onMessage = function (uid, message) {
                             Game.start(game, mt);
 
                             var active = game.active;
+                            that.startTimer(game);
+                            that.startBroadcastTimer(game);
 
                             that.chat(
                                   '?'
@@ -194,6 +202,8 @@ BattleRaiso.prototype.onMessage = function (uid, message) {
 
                                 game.state = State.READY;
                                 that.isPlaying = false;
+                                that.stopTimer(game);
+                                that.stopBroadcastTimer(game);
 
                                 game.sound = Sound.ENDING;
                             } else {
@@ -761,5 +771,33 @@ BattleRaiso.prototype.onMessage = function (uid, message) {
         this.game.sound = '';
     }
 }
+
+BattleRaiso.prototype.stopTimer = function (game) {
+    if(this.timer) {
+        clearInterval(this.timer);
+    }
+    this.timer = null;
+}
+
+BattleRaiso.prototype.startTimer = function (game) {
+    this.timer = setInterval(() => {
+        game.playerList[game.active].time++;
+    }, 1000);
+}
+
+BattleRaiso.prototype.stopBroadcastTimer = function (game) {
+    if(this.clockTimer) {
+        clearInterval(this.clockTimer);
+    }
+    this.clockTimer = null;
+}
+
+BattleRaiso.prototype.startBroadcastTimer = function (game) {
+    this.clockTimer = setInterval(() => {
+        this.broadcast(JSON.stringify(game), false)
+    }, 1000);
+    
+}
+
 
 module.exports = BattleRaiso;
