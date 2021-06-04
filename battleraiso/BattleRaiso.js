@@ -52,6 +52,8 @@ BattleRaiso.prototype.onCommand = function (user, message) {
         case '/basic':
             if (this.isPlaying) {
                 this.chat('?', 'deeppink', 'プレイ中には変更できません。');
+            } else if (this.owner !== user) {
+                this.chat('?', 'deeppink', '管理者のみ変更できます。');
             } else {
                 this.game.setup = Mode.BASIC;
 
@@ -63,6 +65,8 @@ BattleRaiso.prototype.onCommand = function (user, message) {
         case '/advance':
             if (this.isPlaying) {
                 this.chat('?', 'deeppink', 'プレイ中には変更できません。');
+            } else if (this.owner !== user) {
+                this.chat('?', 'deeppink', '管理者のみ変更できます。');
             } else {
                 this.game.setup = Mode.ADVANCE;
 
