@@ -39,6 +39,7 @@ Game.start = function (game, mt) {
     game.before.idx = game.before.x = game.before.y = Index.NONE;
 
     var stock = game.stock;
+    stock.length = 0;
 
     var i, j;
     for (i = 0; i < 6; i++) {
