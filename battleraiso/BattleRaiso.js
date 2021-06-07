@@ -190,6 +190,8 @@ BattleRaiso.prototype.onMessage = function (uid, message) {
 
                             if (Game.isFinish(that.game)) {
                                 var playerList = game.playerList;
+                                game.log.afterHand =  game.playerList[game.active].hand.map(c => Game.getCardName(c));
+                                game.playLog.push(game.log);
 
                                 that.chat(
                                       '?'
