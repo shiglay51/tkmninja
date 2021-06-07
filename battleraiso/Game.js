@@ -1,9 +1,11 @@
 var Player = require('./Player');
 var Const = require('./Const');
+const { Tactics } = require('./Const');
 var Index = Const.Index;
 var State = Const.State;
 var Phase = Const.Phase;
 var Mode = Const.Mode;
+var CARD_COLOR = Const.CARD_COLOR;
 
 var Game = function () { }
 
@@ -22,6 +24,9 @@ Game.clear = function (game) {
     game.weather = [];
     game.stock = [];
     game.before = { idx: Index.NONE, x: Index.NONE, y: Index.NONE };
+    game.playLog = [];
+    game.log = {};
+    game.turn = 1;
 
     var playerList = game.playerList = [new Player(), new Player()];
 
@@ -37,6 +42,8 @@ Game.start = function (game, mt) {
     game.playing = Index.NONE;
     game.target.x = game.target.y = Index.NONE;
     game.before.idx = game.before.x = game.before.y = Index.NONE;
+    game.playLog = [];
+    game.turn = 1;
 
     var stock = game.stock;
     stock.length = 0;
@@ -108,6 +115,14 @@ Game.start = function (game, mt) {
         playerList[0].hand.push(troopDeck.shift());
         playerList[1].hand.push(troopDeck.shift());
     }
+
+    game.log = {
+        uid: playerList[0].uid,
+        turn: game.turn,
+        beforeHand: playerList[0].hand.map(c => Game.getCardName(c)),
+        afterHand: [],
+        flag: [],
+    }
 }
 
 Game.discard = function (game) {
@@ -124,7 +139,16 @@ Game.discard = function (game) {
 }
 
 Game.nextTurn = function (game) {
+    game.log.afterHand =  game.playerList[game.active].hand.map(c => Game.getCardName(c));
+    game.playLog.push(game.log);
     game.active = game.active === 0 ? 1 : 0;
+    game.log = {
+        turn: ++game.turn,
+        uid: game.playerList[game.active].uid,
+        beforeHand: game.playerList[game.active].hand.map(c => Game.getCardName(c)),
+        afterHand: [],
+        flag: []
+    };
     game.phase = Phase.STARTUP;
     game.playing = Index.NONE;
 }
@@ -148,6 +172,36 @@ Game.isFinish = function (game) {
     }
 
     return false;
+}
+
+Game.getCardName = function (card) {
+    var color = (card & 0xff00) >> 8;
+    var number = (card & 0x00ff) + 1;
+    if(color < 6) {
+        return CARD_COLOR[color] + number;
+    }
+
+    switch(card) {
+        case Tactics.ALEXANDER:
+        case Tactics.DARIUS :
+            return '隊長';
+        case Tactics.COMPANION :
+            return '援軍';
+        case Tactics.SHIELD:
+            return '盾';
+        case Tactics.FOG:
+            return '霧';
+        case Tactics.MUD:
+            return '泥';
+        case Tactics.SCOUT:
+            return '偵察';
+        case Tactics.REDEPLOY:
+            return '再配置';
+        case Tactics.DESERTER:
+            return '脱走';
+        case Tactics.TRAITOR:
+            return '裏切り';
+    }
 }
 
 module.exports = Game;

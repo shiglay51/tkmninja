@@ -62,6 +62,15 @@ Const.Tactics.REDEPLOY = 0x0607;
 Const.Tactics.DESERTER = 0x0608;
 Const.Tactics.TRAITOR = 0x0609;
 
+Const.CARD_COLOR = [
+  '赤',    // 0
+  '青',    // 1
+  '緑',    // 2
+  '黄',    // 3
+  '紫',    // 4
+  '橙'     // 5
+];
+
 Const.FONT_COLOR = [
       'yellow'
     , 'lime'

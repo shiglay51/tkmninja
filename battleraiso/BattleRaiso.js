@@ -183,6 +183,7 @@ BattleRaiso.prototype.onMessage = function (uid, message) {
                             var index = parseInt(that.split(message)[0]);
 
                             that.chat('?', 'deeppink', '**' + (index + 1) + '列目 旗獲得**');
+                            game.log.flag.push(index + 1);
 
                             var active = game.active;
                             game.flagList[index] = active;
@@ -292,6 +293,9 @@ BattleRaiso.prototype.onMessage = function (uid, message) {
                             var activeHand = activePlayer.hand;
                             var playingCard = activeHand[playing];
 
+                            game.log.playingCard = Game.getCardName(playingCard);
+                            game.log.index = index + 1;
+
                             activePlayer.field[index].push(playingCard);
 
                             var before = game.before;
@@ -368,6 +372,9 @@ BattleRaiso.prototype.onMessage = function (uid, message) {
                             var playerList = game.playerList;
                             var i = that.split(message)[0];
 
+                            game.log.playingCard = Game.getCardName(playerList[game.active].hand[game.playing]);
+                            game.log.index = i + 1;
+
                             that.chat('?', 'deeppink', '霧をプレイしました。');
 
                             playerList[game.active].count++;
@@ -401,6 +408,9 @@ BattleRaiso.prototype.onMessage = function (uid, message) {
                         if (game.phase === Phase.MUD) {
                             var activePlayer = game.playerList[game.active];
                             var index = that.split(message)[0];
+
+                            game.log.playingCard = Game.getCardName(activePlayer.hand[game.playing]);
+                            game.log.index = parseInt(index) + 1;
 
                             that.chat('?', 'deeppink', '泥をプレイしました。');
 
@@ -439,8 +449,10 @@ BattleRaiso.prototype.onMessage = function (uid, message) {
                         ) {
                             var activePlayer = game.playerList[game.active];
 
+
                             if (game.phase === Phase.SCOUT1) {
                                 that.chat('?', 'deeppink', '偵察をプレイしました。');
+                                game.log.playingCard = Game.getCardName(activePlayer.hand[game.playing]);
 
                                 activePlayer.count++;
                                 Game.discard(game);
@@ -532,6 +544,7 @@ BattleRaiso.prototype.onMessage = function (uid, message) {
                             var param = that.split(message);
 
                             that.chat('?', 'deeppink', '再配置をプレイしました。');
+                            game.log.playingCard = Game.getCardName(game.playerList[game.active].hand[game.playing]);
 
                             game.playerList[game.active].count++;
 
@@ -560,6 +573,9 @@ BattleRaiso.prototype.onMessage = function (uid, message) {
                             var targetCard = targetField[target.x];
                             var before = game.before;
                             var index = parseInt(that.split(message)[0]);
+
+                            game.log.targetCard = Game.getCardName(targetCard);
+                            game.log.move = {before: target.y + 1, after: index + 1}
 
                             if (index === Index.NONE) {
                                 that.chat('?', 'deeppink', (target.y + 1) + '列目から除外しました。');
@@ -611,6 +627,11 @@ BattleRaiso.prototype.onMessage = function (uid, message) {
                             var x = parseInt(param[1]);
 
                             that.chat('?', 'deeppink', '脱走をプレイしました。');
+                            game.log.playingCard = Game.getCardName(activePlayer.hand[game.playing]);
+                            game.log.targetCard = Game.getCardName(inactivePlayer.field[y][x]);
+                            game.log.move = {before: y + 1, after: 0};
+
+
                             activePlayer.count++;
 
                             that.chat('?', 'deeppink', (y + 1) + '列目から除外しました。');
@@ -649,6 +670,7 @@ BattleRaiso.prototype.onMessage = function (uid, message) {
                             var param = that.split(message);
 
                             that.chat('?', 'deeppink', '裏切りをプレイしました。');
+                            game.log.playingCard = Game.getCardName(game.playerList[game.active].hand[game.playing]);
 
                             game.playerList[game.active].count++;
 
@@ -676,6 +698,9 @@ BattleRaiso.prototype.onMessage = function (uid, message) {
                             var activeField = activePlayer.field[index];
                             var target = game.target;
                             var inactiveField = inactivePlayer.field[target.y];
+
+                            game.log.targetCard = Game.getCardName(inactiveField[target.x]);
+                            game.log.move = {before: target.y + 1, after: index + 1};
 
                             that.chat('?', 'deeppink', (index + 1) + '列目に移動しました。');
 
@@ -725,6 +750,8 @@ BattleRaiso.prototype.onMessage = function (uid, message) {
                                 game.playerList[game.active].hand.push(game.tacticsDeck.shift());
                             }
 
+                            game.log.draw = Game.getCardName(game.playerList[game.active].hand[game.playerList[game.active].hand.length - 1]);
+
                             Game.nextTurn(game);
 
                             that.chat(
@@ -755,6 +782,7 @@ BattleRaiso.prototype.onMessage = function (uid, message) {
                             || game.phase === Phase.TRAITOR1
                         )  {
                             that.chat('?', 'deeppink', 'パスしました。');
+                            game.log.pass = true;
 
                             Game.nextTurn(game);
 
