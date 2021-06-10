@@ -1161,7 +1161,7 @@ Kcataso.prototype.onMessage = function (uid, message) {
                                     game.numberList[index] = game.numberList[game.inventorSelecting];
                                     game.numberList[game.inventorSelecting] = tmp;
                                     that.chat('?', 'deeppink', `「${CARD_NAME[Card.INVENTOR]}」を利用しました。`);
-                                    that.chat('?', 'deeppink', '土地を交換しました。');
+                                    that.chat('?', 'deeppink', `${RESOURCE_NAME[game.landList[index]]}(${parseInt(index) + 1})の「${game.numberList[game.inventorSelecting]}」と${RESOURCE_NAME[game.landList[game.inventorSelecting]]}(${parseInt(game.inventorSelecting) + 1})の「${game.numberList[index]}」を交換しました。`);
                                     Game.discardCard(game, active, Card.INVENTOR);
                                     game.inventorSelecting = Index.NONE;
                                     game.phase = Phase.MAIN;
@@ -1472,20 +1472,25 @@ Kcataso.prototype.onMessage = function (uid, message) {
                                     var game = that.game;
                                     var param = that.split(message);
                                     var index = parseInt(param[0]);
+                                    Game.discardCard(game, game.active, Card.RESOURCE_MONOPOLY);
+                                    that.chat('?', 'deeppink', `「${CARD_NAME[Card.RESOURCE_MONOPOLY]}」を利用しました。`);
+                                    that.chat('?', 'deeppink', `「${RESOURCE_NAME[index]}」を独占。`);
                                     for(let i = 0; i < game.playerSize; i++) {
                                         if (i === game.active) { continue; }
-                                        const resource = game.playerList[i].resource[index];
+                                        var currentPlayer = game.playerList[i];
+                                        const resource = currentPlayer.resource[index];
+                                        var color = FONT_COLOR[i];
+                                        var colorName = COLOR_NAME[i];
                                         if(resource === 1) {
+                                            that.chat('?', color, `「${currentPlayer.uid}(${colorName})」から1枚「${RESOURCE_NAME[index]}」を略奪。`);
                                             loseResource(game, i, index, 1);
                                             gainResource(game, game.active, index, 1);
                                         } else if (resource > 1) {
+                                            that.chat('?', color, `「${currentPlayer.uid}(${colorName})」から2枚「${RESOURCE_NAME[index]}」を略奪。`);
                                             loseResource(game, i, index, 2);
                                             gainResource(game, game.active, index, 2);
                                         }
                                     }
-                                    Game.discardCard(game, game.active, Card.RESOURCE_MONOPOLY);
-                                    that.chat('?', 'deeppink', `「${CARD_NAME[Card.RESOURCE_MONOPOLY]}」を利用しました。`);
-                                    that.chat('?', 'deeppink', `「${RESOURCE_NAME[index]}」を独占。`);
                                     game.sound = Sound.BUILD;
                                     game.phase = Phase.MAIN;
                                 })(this);
@@ -1495,17 +1500,21 @@ Kcataso.prototype.onMessage = function (uid, message) {
                                     var game = that.game;
                                     var param = that.split(message);
                                     var index = parseInt(param[0]);
+                                    Game.discardCard(game, game.active, Card.TRADE_MONOPOLY);
+                                    that.chat('?', 'deeppink', `「${CARD_NAME[Card.TRADE_MONOPOLY]}」を利用しました。`);
+                                    that.chat('?', 'deeppink', `「${RESOURCE_NAME[index]}」を独占。`);
                                     for(let i = 0; i < game.playerSize; i++) {
                                         if (i === game.active) { continue; }
-                                        const resource = game.playerList[i].resource[index];
+                                        var currentPlayer = game.playerList[i];
+                                        const resource = currentPlayer.resource[index];
+                                        var color = FONT_COLOR[i];
+                                        var colorName = COLOR_NAME[i];
                                         if (resource > 0) {
+                                            that.chat('?', color, `「${currentPlayer.uid}(${colorName})」から「${RESOURCE_NAME[index]}」を略奪。`);
                                             loseResource(game, i, index, 1);
                                             gainResource(game, game.active, index, 1);
                                         }
                                     }
-                                    Game.discardCard(game, game.active, Card.TRADE_MONOPOLY);
-                                    that.chat('?', 'deeppink', `「${CARD_NAME[Card.TRADE_MONOPOLY]}」を利用しました。`);
-                                    that.chat('?', 'deeppink', `「${RESOURCE_NAME[index]}」を独占。`);
                                     game.sound = Sound.BUILD;
                                     game.phase = Phase.MAIN;
                                 })(this);
@@ -1752,7 +1761,8 @@ Kcataso.prototype.onMessage = function (uid, message) {
                                 (function (that) {
                                     var game = that.game;
                                     that.chat('?', 'deeppink', `「${CARD_NAME[index]}」を利用しました。`);
-                                    Game.harvestAction(game, Resource.GRAIN);
+                                    var gain = Game.harvestAction(game, Resource.GRAIN);
+                                    that.chat('?', 'deeppink', `「${RESOURCE_NAME[Resource.GRAIN]}」を${gain}枚獲得しました。`);
                                     Game.discardCard(game, game.active, index);
                                     game.phase = Phase.MAIN;
                                     game.sound = Sound.BUILD;
@@ -1762,7 +1772,8 @@ Kcataso.prototype.onMessage = function (uid, message) {
                                 (function (that) {
                                     var game = that.game;
                                     that.chat('?', 'deeppink', `「${CARD_NAME[index]}」を利用しました。`);
-                                    Game.harvestAction(game, Resource.ORE);
+                                    var gain = Game.harvestAction(game, Resource.ORE);
+                                    that.chat('?', 'deeppink', `「${RESOURCE_NAME[Resource.ORE]}」を${gain}枚獲得しました。`);
                                     Game.discardCard(game, game.active, index);
                                     game.phase = Phase.MAIN;
                                     game.sound = Sound.BUILD;

@@ -999,6 +999,7 @@ Game.harvestAction = function (game, resource) {
     });
     const gainCount = Math.min(count * 2, game.resourceStock[resource]);
     Game.gainResource(game, game.active, resource, gainCount);
+    return gainCount;
 }
 
 module.exports = Game;
