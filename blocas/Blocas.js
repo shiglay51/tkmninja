@@ -2,15 +2,17 @@ var Room = require('../Room');
 var MersenneTwister = require('../MersenneTwister');
 var Game = require('./Game');
 var Const = require('./Const');
+const { BLOCK_PATTERN } = require('./Const');
 var Option = Const.Option;
 var State = Const.State;
 var Phase = Const.Phase;
 var Sound = Const.Sound;
 var Index = Const.Index;
+var Pattern = Const.Pattern;
 var FONT_COLOR = Const.FONT_COLOR;
 var COLOR_NAME = Const.COLOR_NAME;
 
-var Blacks = function () {
+var Blocas = function () {
     this.initialize('c');
     
     this.game = new Game();
@@ -19,13 +21,13 @@ var Blacks = function () {
     Game.clear(this.game);
 }
 
-Blacks.prototype = new Room();
+Blocas.prototype = new Room();
 
-Blacks.prototype.split = function (source) {
+Blocas.prototype.split = function (source) {
     return source.slice(1).split(' ');
 }
 
-Blacks.prototype.reset = function () {
+Blocas.prototype.reset = function () {
     this.isPlaying = false;
 
     Game.clear(this.game);
@@ -33,11 +35,11 @@ Blacks.prototype.reset = function () {
     this.broadcast(JSON.stringify(this.game));
 }
 
-Blacks.prototype.onCommand = function (user, message) {
+Blocas.prototype.onCommand = function (user, message) {
     this.basicCommand(user, message);
 }
 
-Blacks.prototype.onChat = function (user, message) {
+Blocas.prototype.onChat = function (user, message) {
     var playerList = this.game.playerList;
     var color = 'white';
     
@@ -53,7 +55,7 @@ Blacks.prototype.onChat = function (user, message) {
     this.chat(user.uid, color, (message.split('<').join('&lt;')).split('>').join('&gt;'));
 }
 
-Blacks.prototype.onMessage = function (uid, message) {
+Blocas.prototype.onMessage = function (uid, message) {
     if (message[0] === 'a') {
         this.unicast(uid, JSON.stringify(this.game));
     } else {
@@ -105,7 +107,6 @@ Blacks.prototype.onMessage = function (uid, message) {
                             && playerList[2].uid !== ''
                         ) {
                             Game.start(game, mt);
-                            Dice.clear(that.dice, mt);
 
                             var active = game.active;
                             
@@ -125,10 +126,75 @@ Blacks.prototype.onMessage = function (uid, message) {
             switch (message[0]) {
                 case 'e':
                 case 'f':
+                    (function (that) {
+                        var game = that.game;
+                        var index = parseInt(that.split(message)[0]);
+                        game.selectingPattern = index;
+                        game.selectingRotate = 0;
+                    })(this);
+                    break;
                 case 'g':
+                    (function (that) {
+                        var game = that.game;
+                        game.selectingRotate++;
+                    })(this);
+                    break;
                 case 'h':
+                    (function (that) {
+                        var game = that.game;
+                        game.selectingReverse = !game.selectingReverse;
+                    })(this);
+                    break;                    
                 case 'i':
+                    (function (that) {
+                        var game = that.game;
+                        var param = that.split(message);
+                        var indexX = parseInt(param[0]);
+                        var indexY = parseInt(param[1]);
+                        var offsetX = parseInt(param[2]);
+                        var offsetY = parseInt(param[3]);
+                        var currentPattern = BLOCK_PATTERN[game.selectingPattern];
+                        currentPattern = Game.rotateBlock(game.selectingRotate, currentPattern);
+                        if(game.selectingReverse) {
+                            currentPattern = Game.reverseBlock(currentPattern);
+                        }
+                        for(let i = 0; i < currentPattern.length; i++) {
+                            for(let j = 0; j < currentPattern[i].length; j++) {
+                                var posX = indexX - offsetX + j;
+                                var posY = indexY - offsetY + i;
+                                if (currentPattern[i][j] === Pattern.BLOCK) { 
+                                    game.blocks[posY][posX] = game.active;
+                                }
+                            }
+                        }
+                        game.playerList[game.active].blocks = game.playerList[game.active].blocks.filter(b => b !== game.selectingPattern);
+                        game.playerList[game.active].score += that.point(game.selectingPattern);
+                        if(game.playerList[game.active].blocks.length === 0) {
+                            if(game.selectingPattern === 0) {
+                                game.playerList[game.active].score += 5;
+                            }
+                            game.playerList[game.active].finish = true;
+                            game.sound = Sound.GET;
+                        } else {
+                            game.sound = Sound.PASS;
+                        }
+                        Game.nextTurn(game);
+                        if(game.playerList.filter(p => !p.finish).length === 0) {
+                            that.ending(that);
+                        }
+                    })(this);
+                    break;                    
                 case 'j':
+                    (function (that) {
+                        var game = that.game;
+                        game.playerList[game.active].finish = true;
+                        game.sound = Sound.PASS;
+                        Game.nextTurn(game);
+                        if(game.playerList.filter(p => !p.finish).length === 0) {
+                            that.ending(that);
+                        }
+                    })(this);
+                    break;                     
                 case 'k':
                 case 'l':
                 case 'm':
@@ -170,4 +236,50 @@ Blacks.prototype.onMessage = function (uid, message) {
     }
 }
 
-module.exports = Blacks;
+Blocas.prototype.point = function (block) {
+    switch(block) {
+        case 0:
+            return 1;
+        case 1:
+            return 2;
+        case 2:
+        case 3:
+            return 3;
+        case 4: 
+        case 5: 
+        case 6: 
+        case 7: 
+        case 8:
+            return 4;
+        default:
+            return 5; 
+    }    
+}
+
+Blocas.prototype.ending = function (that) {
+    var game = that.game;
+    that.chat(
+        '?'
+      , 'deeppink'
+      , '++勝利 おめでとう++'
+    );
+
+    var playerList = game.playerList;
+    var winner = Game.findWinner(game);
+    var winnerStr = winner.map(w => `${w.player.uid}(${COLOR_NAME[w.index]})`);
+
+    that.chat(
+            '?'
+        , 'deeppink'
+        , `${winnerStr.join(',')}`
+    );
+
+    var i;
+    for (i = 0; i < game.playerSize; i++) { playerList[i].uid = ''; }
+    game.playerSize = 4;
+    game.state = State.READY;
+    that.isPlaying = false;
+    game.sound = Sound.ENDING;
+}
+
+module.exports = Blocas;

@@ -7,7 +7,7 @@ var Cataso = require('./cataso/Cataso');
 var Kcataso = require('./kcataso/Kcataso');
 var BattleRaiso = require('./battleraiso/BattleRaiso');
 var Goipai = require('./goipai/Goipai');
-var Blacks = require('./blacks/Blacks');
+var Blocas = require('./blocas/Blocas');
 
 var roomList = [
       new Cataso()               // 0
@@ -41,7 +41,7 @@ var roomList = [
     , new Kcataso()
     , new Kcataso()
     , new Kcataso()                 // 30
-    , new Blacks()                 
+    , new Blocas()                 
 ];
 
 var User = function (ws, uid, trip) {
