@@ -178,9 +178,10 @@ Blocas.prototype.onMessage = function (uid, message) {
                         } else {
                             game.sound = Sound.PASS;
                         }
-                        Game.nextTurn(game);
                         if(game.playerList.filter(p => !p.finish).length === 0) {
                             that.ending(that);
+                        } else {
+                            Game.nextTurn(game, that);
                         }
                     })(this);
                     break;                    
@@ -189,9 +190,10 @@ Blocas.prototype.onMessage = function (uid, message) {
                         var game = that.game;
                         game.playerList[game.active].finish = true;
                         game.sound = Sound.PASS;
-                        Game.nextTurn(game);
                         if(game.playerList.filter(p => !p.finish).length === 0) {
                             that.ending(that);
+                        } else {
+                            Game.nextTurn(game, that);
                         }
                     })(this);
                     break;                     

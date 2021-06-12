@@ -3,6 +3,7 @@ var Const = require('./Const');
 var Index = Const.Index;
 var State = Const.State;
 var Phase = Const.Phase;
+var COLOR_NAME = Const.COLOR_NAME;
 
 var Game = function () { }
 
@@ -81,7 +82,7 @@ Game.reverseBlock = function(pattern) {
     return result;
 }
 
-Game.nextTurn = function (game) {
+Game.nextTurn = function (game, that) {
     if(game.phase === Phase.SETUP) {
         if(game.active === game.playerSize - 1) {
             game.phase = Phase.MAIN;
@@ -96,6 +97,11 @@ Game.nextTurn = function (game) {
             break;
         }
     }
+    that.chat(
+        '?'
+      , 'orange'
+      , '--「' + game.playerList[game.active].uid + '(' + COLOR_NAME[game.active] + ')」ターン--'
+    );
 }
 
 Game.findWinner = function (game) {
