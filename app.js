@@ -42,6 +42,10 @@ var roomList = [
     , new Kcataso()
     , new Kcataso()                 // 30
     , new Blocas()                 
+    , new Blocas()                 
+    , new Blocas()                 
+    , new Blocas()                 
+    , new Blocas()                 
 ];
 
 var User = function (ws, uid, trip) {

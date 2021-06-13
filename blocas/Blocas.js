@@ -13,7 +13,7 @@ var FONT_COLOR = Const.FONT_COLOR;
 var COLOR_NAME = Const.COLOR_NAME;
 
 var Blocas = function () {
-    this.initialize('c');
+    this.initialize('l');
     
     this.game = new Game();
     this.mt = new MersenneTwister();
@@ -154,6 +154,7 @@ Blocas.prototype.onMessage = function (uid, message) {
                         var offsetX = parseInt(param[2]);
                         var offsetY = parseInt(param[3]);
                         var currentPattern = BLOCK_PATTERN[game.selectingPattern];
+                        game.previous = [];
                         currentPattern = Game.rotateBlock(game.selectingRotate, currentPattern);
                         if(game.selectingReverse) {
                             currentPattern = Game.reverseBlock(currentPattern);
@@ -164,6 +165,7 @@ Blocas.prototype.onMessage = function (uid, message) {
                                 var posY = indexY - offsetY + i;
                                 if (currentPattern[i][j] === Pattern.BLOCK) { 
                                     game.blocks[posY][posX] = game.active;
+                                    game.previous.push({posX, posY});
                                 }
                             }
                         }

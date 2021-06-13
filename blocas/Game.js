@@ -29,6 +29,7 @@ Game.clear = function (game) {
     game.selectingRotate = 0;
     game.selectingReverse = false;
     game.blocks = [];
+    game.previous = [];
     
     var playerList = game.playerList = [
           new Player()
@@ -50,6 +51,7 @@ Game.start = function (game, mt) {
     game.selectingReverse = false;
     game.playerList.forEach(p => Player.start(p));
     game.active = 0;
+    game.previous = [];
     for(let i = 0; i < 20; i++) {
         for (let j = 0; j < 20; j++) {
             if(j === 0) {
