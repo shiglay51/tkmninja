@@ -164,6 +164,25 @@ Room.prototype.basicCommand = function (user, message) {
                 this.chat('?', 'deeppink', '管理者でないためリセットできません。');
             }
             break;
+        case '/kick':
+            if (this.owner !== null && this.owner.uid === user.uid) {
+                if (!message[1]) {
+                    this.chat('?', 'deeppink', 'プレイヤー名を入力してください');  
+                } else {
+                    var uid = message[1];
+                    var user = this.userList.find(u => u.uid === uid);
+                    if(!user) {
+                        this.chat('?', 'deeppink', uid + 'は存在しません。');
+                        return;
+                    }
+                    this.removeUser(user);
+                    this.chat('?', 'deeppink', uid + 'を追放しました。');
+                }
+            } else  {
+                this.chat('?', 'deeppink', '管理者でないためキックできません。');
+            }
+
+            break;
     }
 }
 
