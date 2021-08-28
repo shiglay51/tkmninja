@@ -13,9 +13,9 @@ var CARD_NAME = Const.CARD_NAME;
 var FONT_COLOR = Const.FONT_COLOR;
 var COLOR_NAME = Const.COLOR_NAME;
 
-var Goipai = function () {
+var Goipai = function (isAuth = false) {
     this.initialize('g');
-
+    this.isAuth = isAuth;
     this.game = new Game();
     this.mt = new MersenneTwister();
 

@@ -22,11 +22,12 @@ var DEVELOP_NAME = Const.DEVELOP_NAME;
 var RESOURCE_NAME = Const.RESOURCE_NAME;
 var Event = Const.Event;
 
-var Kcataso = function () {
+var Kcataso = function (isAuth = false) {
     this.initialize('c');
     
     this.game = new Game();
     this.dice = new Dice();
+    this.isAuth = isAuth;
     this.mt = new MersenneTwister();
     
     Game.clear(this.game);

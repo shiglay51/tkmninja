@@ -46,6 +46,33 @@ var roomList = [
     , new Blocas()                 
     , new Blocas()                 
     , new Blocas()                 
+    // isAuth
+    , new Cataso(true)              // 36
+    , new Cataso(true)
+    , new Cataso(true)
+    , new Cataso(true)
+    , new Cataso(true)             // 40
+    , new BattleRaiso(true)        // 41
+    , new BattleRaiso(true)     
+    , new BattleRaiso(true)     
+    , new BattleRaiso(true)     
+    , new BattleRaiso(true)
+    , new Goipai(true)             // 46
+    , new Goipai(true)
+    , new Goipai(true)
+    , new Goipai(true)
+    , new Goipai(true)
+    , new Kcataso(true)          // 51
+    , new Kcataso(true)
+    , new Kcataso(true)
+    , new Kcataso(true)
+    , new Kcataso(true)
+    , new Blocas(true)          // 56
+    , new Blocas(true)     
+    , new Blocas(true)     
+    , new Blocas(true)     
+    , new Blocas(true)         // 60
+
 ];
 
 var User = function (ws, uid, trip) {
@@ -88,6 +115,24 @@ var createTrip = function (source) {
     return crypted.substr(0, 10);
 }
 
+var auth = function (index, trip) {
+    if(!roomList[index].isAuth) return true;
+    if(trip == '') return false;
+
+    var owner = roomList[index].userList.filter(user => user === roomList[index].owner);
+    if(owner.length === 0) {
+        return true;
+    } else  {
+        if(owner[0].trip == '') {
+            return true;
+        }
+        if(owner[0].trip === trip) {
+            return true;
+        }
+        return false;
+    }
+}
+
 var login = function (index, ws, message) {
     var isSuccessful = false;
 
@@ -96,10 +141,14 @@ var login = function (index, ws, message) {
 
     var src;
     if (token.length > 1) { src = token[1]; }
+
+    var trip = '';
+    if (src) { trip = createTrip(src); }
     
     if (
            uid.length > 0
         && uid.match(/^[0-9A-Za-z]{1,12}$/)
+        && auth(index, trip)
     ) {
         isSuccessful = true;
 
@@ -116,9 +165,6 @@ var login = function (index, ws, message) {
 
     if (isSuccessful) {
         try {
-            var trip = '';
-
-            if (src) { trip = createTrip(src); }
 
             if (trip !== '') {
                 ws.send('B' + uid + '%' + trip);

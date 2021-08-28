@@ -17,11 +17,12 @@ var COLOR_NAME = Const.COLOR_NAME;
 var LAND_LINK = Const.LAND_LINK;
 var RESOURCE_NAME = Const.RESOURCE_NAME;
 
-var Cataso = function () {
+var Cataso = function (isAuth = false) {
     this.initialize('c');
     
     this.game = new Game();
     this.dice = new Dice();
+    this.isAuth = isAuth;
     this.mt = new MersenneTwister();
     
     Game.clear(this.game);

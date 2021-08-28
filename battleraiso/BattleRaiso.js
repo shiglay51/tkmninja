@@ -12,12 +12,13 @@ var Tactics = Const.Tactics;
 var FONT_COLOR = Const.FONT_COLOR;
 var COLOR_NAME = Const.COLOR_NAME;
 
-var BattleRaiso = function () {
+var BattleRaiso = function (isAuth = false) {
     this.initialize('b');
 
     this.game = new Game();
     this.mt = new MersenneTwister();
     this.timer = null;
+    this.isAuth = isAuth
     this.clockTimer = null;
 
     Game.clear(this.game);

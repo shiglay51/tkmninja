@@ -4,6 +4,7 @@ Room.prototype.symbol = null;
 Room.prototype.userList = null;
 Room.prototype.owner = null;
 Room.prototype.watchDogTimer = null;
+Room.prototype.isAuth = null;
 Room.prototype.chatCount = {};
 
 Room.prototype.initialize = function (symbol) {
@@ -21,7 +22,7 @@ Room.prototype.resetWatchDog = function() {
     this.watchDogTimer = setTimeout(() => {
         this.owner = null;
         this._broadcast('G');
-    }, 1000 * 60 * 60 /* 1 hour */);   
+    }, 1000 * 60 * 10 /* 10 min */);   
 }
 
 Room.prototype.resetChatCount = function(uid) {

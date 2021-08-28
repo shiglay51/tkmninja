@@ -12,10 +12,11 @@ var Pattern = Const.Pattern;
 var FONT_COLOR = Const.FONT_COLOR;
 var COLOR_NAME = Const.COLOR_NAME;
 
-var Blocas = function () {
+var Blocas = function (isAuth = false) {
     this.initialize('l');
     
     this.game = new Game();
+    this.isAuth = isAuth;
     this.mt = new MersenneTwister();
     
     Game.clear(this.game);
