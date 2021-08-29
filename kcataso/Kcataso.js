@@ -73,6 +73,28 @@ Kcataso.prototype.onCommand = function (user, message) {
                 this.broadcast(JSON.stringify(this.game));
             }
             break;
+        case '/close':
+            if (this.isPlaying) {
+                this.chat('?', 'deeppink', 'プレイ中には変更できません。');
+            } else {
+                this.game.hidden = true;
+
+                this.chat('?', 'deeppink', '市場表示なしに変更しました');
+
+                this.broadcast(JSON.stringify(this.game));
+            }
+            break;
+        case '/open':
+            if (this.isPlaying) {
+                this.chat('?', 'deeppink', 'プレイ中には変更できません。');
+            } else {
+                this.game.hidden = false;
+
+                this.chat('?', 'deeppink', '市場表示ありに変更しました');
+
+                this.broadcast(JSON.stringify(this.game));
+            }
+            break;             
     }
 }
 

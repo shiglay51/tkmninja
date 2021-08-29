@@ -31,6 +31,7 @@ Game.suffle = function (source, mt) {
 Game.clear = function (game) {
     game.state = State.READY;
     game.setup = Option.ALPHABET_SETUP;
+    game.hidden = false;
     game.sound = '';
     game.playerSize = 4;
     game.phase = Phase.NONE;
