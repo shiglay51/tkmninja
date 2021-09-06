@@ -235,9 +235,14 @@ wss.on('connection', function (ws) {
                 buff += roomList[i].symbol + ' ';
 
                 if (roomList[i].isPlaying) {
-                    buff += 'p';
+                    buff += 'p ';
                 } else {
-                    buff += 'r';
+                    buff += 'r ';
+                }
+                if (roomList[i].owner) {
+                    buff += 'l';
+                } else {
+                    buff += 'u';
                 }
 
                 if (i < len1 - 1) { buff += ' '; }
