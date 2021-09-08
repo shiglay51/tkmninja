@@ -304,6 +304,11 @@ wss.on('connection', function (ws) {
                     roomList[index]._broadcast('J');
                     break;
                 case 'f':
+                    roomList[index].resetChatCount(user.uid);
+                    if(user && roomList[index].chatCount[user.uid] && roomList[index].chatCount[user.uid].count > 5) {
+                        roomList[index].removeUser(user);
+                        roomList[index].chat('?', 'deeppink', user.uid + 'を追放しました。');
+                    }
                     roomList[index].chat(
                           '?'
                         , 'deeppink'
