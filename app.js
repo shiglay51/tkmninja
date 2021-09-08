@@ -282,10 +282,15 @@ wss.on('connection', function (ws) {
                 case 'c':
                     param = splitSyntaxType1(message);
 
-                    roomList[index].onChat(user, param);
+                    if(param.length > 1 && param[0] === '@') {
+                        var uid = param.split(' ')[0].slice(1);
+                        roomList[index].mention(user.uid, uid, 'orange', param);
+                    } else {
+                        roomList[index].onChat(user, param);
 
-                    if (param.length > 1 && param[0] === '/') {
-                        roomList[index].onCommand(user, param.split(' '));
+                        if (param.length > 1 && param[0] === '/') {
+                            roomList[index].onCommand(user, param.split(' '));
+                        }
                     }
 
                     break;

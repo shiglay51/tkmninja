@@ -119,6 +119,26 @@ Room.prototype.chat = function (uid, color, message) {
     this._broadcast('H' + uid + ' ' + color + ' ' + message);
 }
 
+Room.prototype.mention = function (from, to, color, message) {
+
+    if(from === to) {
+        return;
+    }
+    this.resetChatCount(from);
+    var user = this.userList.find(u => u.uid === from);
+    if(user && this.chatCount[from] && this.chatCount[from].count > 5) {
+        this.removeUser(user);
+        this.chat('?', 'deeppink', uid + 'を追放しました。');
+    }
+
+    var toUser = this.userList.find(u => u.uid === to);
+
+    if(toUser) {
+        this._unicast(toUser, 'H' + from + ' ' + color + ' ' + message);
+        this._unicast(user, 'H' + from + ' ' + color + ' ' + message);
+    }
+}
+
 Room.prototype.reset = function () { }
 
 Room.prototype.onLoad = function () { }
