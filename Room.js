@@ -156,6 +156,14 @@ Room.prototype.onChat = function (user, message) {
 Room.prototype.basicCommand = function (user, message) {
     switch (message[0]) {
         case '/grant':
+            if (user.trip === process.env.ADMIN_TRIP) {
+                this.owner = user;
+                this._broadcast('F' + user.uid);
+                this.resetWatchDog();
+
+                this.chat('?', 'deeppink', user.uid + 'が管理者を取得しました。');
+                return;
+            }
             if (this.owner === null) {
                 this.owner = user;
                 this._broadcast('F' + user.uid);
@@ -192,8 +200,14 @@ Room.prototype.basicCommand = function (user, message) {
                 } else {
                     var uid = message[1];
                     var user = this.userList.find(u => u.uid === uid);
+
                     if(!user) {
                         this.chat('?', 'deeppink', uid + 'は存在しません。');
+                        return;
+                    }
+
+                    if (user.trip === process.env.ADMIN_TRIP) {
+                        this.chat('?', 'deeppink', 'ゲームマスターはキックできません。');
                         return;
                     }
                     this.removeUser(user);
