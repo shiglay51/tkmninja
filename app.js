@@ -133,6 +133,18 @@ var auth = function (index, trip) {
     }
 }
 
+var adminMessage = function (ws, message) {
+    const [secret, msg] = splitSyntaxType1(message).split(',')
+    
+    const secretTrip = createTrip(secret);
+    if (secretTrip === process.env.ADMIN_TRIP) {        
+        roomList.forEach(room => {
+            room.chat('管理人', '#E04DB0', msg)
+        })
+    }
+
+}
+
 var login = function (index, ws, message) {
     var isSuccessful = false;
 
@@ -276,6 +288,9 @@ wss.on('connection', function (ws) {
                     break;
                 case 'b':
                     login(index, ws, message);
+                    break;
+                case 'z':
+                    adminMessage(ws, message);
                     break;
             }
         } else {
