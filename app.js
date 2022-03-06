@@ -182,6 +182,7 @@ var login = function (index, ws, message) {
             } else {
                 roomList[index]._broadcast('D' + user.uid);
             }
+            console.log(`login successfull: <${user.uid}> from`, user.ws.upgradeReq.headers)
 
             if (roomList[index].owner !== null) {
                 ws.send('F' + roomList[index].owner.uid);

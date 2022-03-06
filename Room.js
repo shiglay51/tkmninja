@@ -131,6 +131,10 @@ Room.prototype.mention = function (from, to, color, message) {
         this.chat('?', 'deeppink', uid + 'を追放しました。');
     }
 
+    if(message.length > 140) {
+        message = message.substr(0, 140) + '…';
+    }
+
     var toUser = this.userList.find(u => u.uid === to);
 
     if(toUser) {
