@@ -42,6 +42,29 @@ Game.clear = function (game) {
     for (i = 0; i < len1; i++) { Player.clear(playerList[i]); }
 }
 
+Game.copy = function (game, prev) {
+    game.state = prev.state;
+    game.sound = '';
+    game.playerSize = prev.playerSize;
+    game.phase = prev.phase;
+    game.active = prev.active;
+    game.selectingPattern = prev.selectingPattern;
+    game.selectingRotate = prev.selectingRotate;
+    game.selectingReverse = prev.selectingReverse;
+    game.blocks = prev.block || [];
+    game.previous = prev.previous || [];
+    
+    var playerList = game.playerList = [
+          new Player()
+        , new Player()
+        , new Player()
+        , new Player()
+    ];
+
+    var len1 = playerList.length;
+    for (i = 0; i < len1; i++) { Player.copy(playerList[i], prev.playerList[i]); }
+}
+
 Game.start = function (game, mt) {
     mt.setSeed((new Date()).getTime());
     game.state = State.PLAYING;

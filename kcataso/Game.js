@@ -112,6 +112,101 @@ Game.clear = function (game) {
     for (let i = 0; i < len1; i++) { Player.clear(playerList[i]); }
 }
 
+Game.copy = function (game, prev) {
+    game.state = prev.state;
+    game.setup = prev.setup;
+    game.hidden = prev.hidden;
+    game.sound = '';
+    game.playerSize = prev.playerSize;
+    game.phase = prev.phase;
+    game.active = prev.active;
+    game.priority = prev.priority || [];
+    game.canPlayCard = prev.canPlayCard;
+    game.isBarbarianArrivedOnce = prev.isBarbarianArrivedOnce;
+    game.barbarianPos = prev.barbarianPos;
+    game.selectingKnight = prev.selectingKnight;
+    game.attackedKnight = prev.attackedKnight;
+    game.strongestKnightsPlayer = prev.strongestKnightsPlayer || [];
+    game.weakestKnightsPlayer = prev.weakestKnightsPlayer || [];
+    game.noGainPlayer = prev.noGainPlayer || [];
+    game.needDiscardCardPlayer = prev.needDiscardCardPlayer || [];
+    game.metropolisStock = prev.metropolisStock || [0, 0, 0];
+    game.selectingDevelopmentType = prev.selectingDevelopmentType;
+    game.inventorSelecting = prev.inventorSelecting;
+    game.spySelecting = prev.spySelecting;
+    game.alchemistDice1 = prev.alchemistDice1;
+    game.alchemistDice2 = prev.alchemistDice2;
+    game.commercialHarborDone = prev.commercialHarborDone || [];
+    game.commercialHarborCurrent = prev.commercialHarborCurrent;
+    game.masterMerchantSelecting = prev.masterMerchantSelecting;
+    game.merchantInfo = prev.merchantInfo || [Index.NONE, Index.NONE]; // index, player
+    
+    game.secondSettlement = prev.secondSettlement;
+    
+    game.trade = prev.trade || {
+          output: [0, 0, 0, 0, 0, 0, 0, 0]
+        , input: [0, 0, 0, 0, 0, 0, 0, 0]
+        , playerIndex: Index.NONE
+    };
+    
+    game.largestArmy = prev.largestArmy;
+    game.longestRoad = prev.longestRoad;
+    game.robber = prev.robber;
+    game.dice1 = prev.dice1;
+    game.dice2 = prev.dice2;
+    game.event = prev.event;
+    game.landList = prev.landList || [];
+    game.diceHistory = prev.diceHistory || [];
+    game.eventHistory = prev.eventHistory || [];
+    game.commercialHarborDone = prev.commercialHarborDone || [];
+    
+    game.settlementList = prev.settlementList || [];
+    if (game.settlementList.length === 0) {        
+        var settlementList = game.settlementList = [];
+        for (let i = 0; i < 54; i++) { settlementList.push(SettlementRank.NONE | 0x00ff); }
+    }
+
+    game.tmpSettlementList = prev.tmpSettlementList || []
+    if (game.tmpSettlementList.length === 0) {        
+        var tmpSettlementList = game.tmpSettlementList = [];
+        for (let i = 0; i < 54; i++) { tmpSettlementList.push(Index.NONE); }
+    }
+    
+    game.roadList = prev.roadList || [];
+    if (game.roadList.length === 0) {        
+        var roadList = game.roadList = [];
+        for (let i = 0; i < 72; i++) { roadList.push(Index.NONE); }
+    }
+
+    game.knightLis = prev.knightLis || [];
+    if (game.knightLis.length === 0) {        
+        var knightList = game.knightList = [];
+        for (let i = 0; i < 54; i++) { knightList.push(KnightRank.NONE | 0x0000ff); }
+    }
+
+    game.cityWallList = prev.cityWallList || [];
+    if (game.cityWallList.length === 0) {        
+        var cityWallList = game.cityWallList = [];
+        for (let i = 0; i < 54; i++) { cityWallList.push(0xff); }
+    }
+    
+    game.numberList = prev.numberList || [];
+    game.resourceStock = prev.resourceStock || [0, 0, 0, 0, 0, 0, 0, 0];
+    game.cardStockTrade = prev.cardStockTrade || [];
+    game.cardStockPolitics = prev.cardStockPolitics || [];
+    game.cardStockScience = prev.cardStockScience || [];
+
+    var playerList = game.playerList = [
+          new Player()
+        , new Player()
+        , new Player()
+        , new Player()
+    ];
+
+    var len1 = playerList.length;
+    for (let i = 0; i < len1; i++) { Player.copy(playerList[i], prev.playerList[i]); }
+}
+
 Game.start = function (game, mt) {
     mt.setSeed((new Date()).getTime());
     game.state = State.PLAYING;

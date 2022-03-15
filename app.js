@@ -9,71 +9,89 @@ var BattleRaiso = require('./battleraiso/BattleRaiso');
 var Goipai = require('./goipai/Goipai');
 var Blocas = require('./blocas/Blocas');
 
+const redis = require('redis')
+
+const redisURL =  process.env.REDIS_TLS_URL || 'redis://localhost:6379'
+const client = redis.createClient({
+    url: redisURL,
+    socket: {
+        tls: !!process.env.REDIS_TLS_URL,
+        rejectUnauthorized: false
+    }
+})
+client.connect()
+client.on('error', function (err) {
+    console.log('Redis error =>', err);
+});
+client.on('reconnecting', () => console.log('Redis reconnecting'))
+
 var roomList = [
-      new Cataso()               // 0
-    , new Cataso()               
-    , new Cataso()               
-    , new BattleRaiso()               
-    , new Goipai()
-    , new Cataso()
-    , new Cataso()
-    , new Cataso()
-    , new Cataso()
-    , new Cataso()
-    , new Cataso()                 // 10
-    , new Cataso()
-    , new Cataso()
-    , new Cataso()
-    , new Cataso()
-    , new Cataso()
-    , new Cataso()
-    , new Cataso()
-    , new Cataso()
-    , new Cataso()
-    , new BattleRaiso()            // 20
-    , new BattleRaiso()
-    , new BattleRaiso()
-    , new Goipai()
-    , new Goipai()
-    , new Cataso()
-    , new Kcataso()
-    , new Kcataso()
-    , new Kcataso()
-    , new Kcataso()
-    , new Kcataso()                 // 30
-    , new Blocas()                 
-    , new Blocas()                 
-    , new Blocas()                 
-    , new Blocas()                 
-    , new Blocas()                 
+      new Cataso(0, client)               // 0
+    , new Cataso(1, client)               
+    , new Cataso(2, client)               
+    , new BattleRaiso(3, client)               
+    , new Goipai(4, client)
+    , new Cataso(5, client)
+    , new Cataso(6, client)
+    , new Cataso(7, client)
+    , new Cataso(8, client)
+    , new Cataso(9, client)
+    , new Cataso(10, client)                 // 10
+    , new Cataso(11, client)
+    , new Cataso(12, client)
+    , new Cataso(13, client)
+    , new Cataso(14, client)
+    , new Cataso(15, client)
+    , new Cataso(16, client)
+    , new Cataso(17, client)
+    , new Cataso(18, client)
+    , new Cataso(19, client)
+    , new BattleRaiso(20, client)            // 20
+    , new BattleRaiso(21, client)
+    , new BattleRaiso(22, client)
+    , new Goipai(23, client)
+    , new Goipai(24, client)
+    , new Cataso(25, client)
+    , new Kcataso(26, client)
+    , new Kcataso(27, client)
+    , new Kcataso(28, client)
+    , new Kcataso(29, client)
+    , new Kcataso(30, client)                 // 30
+    , new Blocas(31, client)                 
+    , new Blocas(32, client)                 
+    , new Blocas(33, client)                 
+    , new Blocas(34, client)                 
+    , new Blocas(35, client)                 
     // isAuth
-    , new Cataso(true)              // 36
-    , new Cataso(true)
-    , new Cataso(true)
-    , new Cataso(true)
-    , new Cataso(true)             // 40
-    , new BattleRaiso(true)        // 41
-    , new BattleRaiso(true)     
-    , new BattleRaiso(true)     
-    , new BattleRaiso(true)     
-    , new BattleRaiso(true)
-    , new Goipai(true)             // 46
-    , new Goipai(true)
-    , new Goipai(true)
-    , new Goipai(true)
-    , new Goipai(true)
-    , new Kcataso(true)          // 51
-    , new Kcataso(true)
-    , new Kcataso(true)
-    , new Kcataso(true)
-    , new Kcataso(true)
-    , new Blocas(true)          // 56
-    , new Blocas(true)     
-    , new Blocas(true)     
-    , new Blocas(true)     
-    , new Blocas(true)         // 60
+    , new Cataso(36, client, true)              // 36
+    , new Cataso(37, client, true)
+    , new Cataso(38, client, true)
+    , new Cataso(39, client, true)
+    , new Cataso(40, client, true)             // 40
+    , new BattleRaiso(41, client, true)        // 41
+    , new BattleRaiso(42, client, true)     
+    , new BattleRaiso(43, client, true)     
+    , new BattleRaiso(44, client, true)     
+    , new BattleRaiso(45, client, true)
+    , new Goipai(46, client, true)             // 46
+    , new Goipai(47, client, true)
+    , new Goipai(48, client, true)
+    , new Goipai(49, client, true)
+    , new Goipai(50, client, true)
+    , new Kcataso(51, client, true)          // 51
+    , new Kcataso(52, client, true)
+    , new Kcataso(53, client, true)
+    , new Kcataso(54, client, true)
+    , new Kcataso(55, client, true)
+    , new Blocas(56, client, true)          // 56
+    , new Blocas(57, client, true)     
+    , new Blocas(58, client, true)     
+    , new Blocas(59, client, true)     
+    , new Blocas(60, client, true)         // 60
 
 ];
+
+
 
 var User = function (ws, uid, trip) {
     this.ws = ws;
@@ -344,5 +362,5 @@ wss.on('connection', function (ws) {
 server.listen(process.env.PORT || 5000);
 
 process.on('uncaughtException', function (e) {
-     console.log('uncaughtException => ' + e);
+    console.log('uncaughtException =>', e);
 });

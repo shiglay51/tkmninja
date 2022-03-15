@@ -12,8 +12,8 @@ var Tactics = Const.Tactics;
 var FONT_COLOR = Const.FONT_COLOR;
 var COLOR_NAME = Const.COLOR_NAME;
 
-var BattleRaiso = function (isAuth = false) {
-    this.initialize('b');
+var BattleRaiso = function (roomId, redis, isAuth = false) {
+    this.initialize('b', roomId, redis);
 
     this.game = new Game();
     this.mt = new MersenneTwister();
@@ -21,7 +21,18 @@ var BattleRaiso = function (isAuth = false) {
     this.isAuth = isAuth
     this.clockTimer = null;
 
-    Game.clear(this.game);
+    this.redis.get(`room-${this.roomId}`).then(prev => {
+        if (prev) {
+            this.isPlaying = JSON.parse(prev).isPlaying;
+            Game.copy(this.game, JSON.parse(prev).game);
+            if (Phase.NONE !== JSON.parse(prev).game.phase) {                
+                this.startTimer(this.game);
+                this.startBroadcastTimer(this.game);
+            }
+        } else {
+            Game.clear(this.game);
+        }
+    });
 }
 
 BattleRaiso.prototype = new Room();
@@ -32,14 +43,8 @@ BattleRaiso.prototype.split = function (source) {
 
 BattleRaiso.prototype.reset = function () {
     this.isPlaying = false;
-    if(this.clockTimer) {
-        clearInterval(this.clockTimer);
-        this.clockTimer = null;
-    }
-    if(this.timer) {
-        clearInterval(this.timer);
-        this.timer = null;
-    }
+    this.stopTimer();
+    this.stopBroadcastTimer();
 
     Game.clear(this.game);
 

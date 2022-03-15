@@ -20,6 +20,23 @@ Player.clear = function (player) {
     player.trading = false;
 }
 
+Player.copy = function (player, prev) {
+    player.uid = prev.uid ? prev.uid : '';
+    player.baseScore = prev.baseScor ? prev.baseScor : 0;
+    player.bonusScore = prev.bonusScore ? prev.bonusScore : 0;
+    player.burst = prev.burst ? prev.burst : 0;
+    player.roadStock = prev.roadStock ? prev.roadStock : 0;
+    player.settlementStock = prev.settlementStock ? prev.settlementStock : 0;
+    player.cityStock = prev.cityStock ? prev.cityStock : 0;
+    player.secondSettlement = prev.secondSettlement ? prev.secondSettlement : Index.NONE;
+    player.harbor = prev.harbor ? prev.harbor : [false, false, false, false, false, false];
+    player.resource = prev.resource ? prev.resource : [0, 0, 0, 0, 0];
+    player.sleepCard = prev.sleepCard ? prev.sleepCard : [0, 0, 0, 0, 0];
+    player.wakeCard = prev.wakeCard ? prev.wakeCard :[0, 0, 0, 0, 0];
+    player.deadCard = prev.deadCard ? prev.deadCard : [0, 0, 0, 0, 0];
+    player.trading = prev.trading ? prev.trading : false;
+}
+
 Player.start = function (player) {
     player.baseScore = 0;
     player.bonusScore = 0;

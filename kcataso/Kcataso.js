@@ -22,15 +22,23 @@ var DEVELOP_NAME = Const.DEVELOP_NAME;
 var RESOURCE_NAME = Const.RESOURCE_NAME;
 var Event = Const.Event;
 
-var Kcataso = function (isAuth = false) {
-    this.initialize('c');
+var Kcataso = function (roomId, redis, isAuth = false) {
+    this.initialize('c', roomId, redis);
     
     this.game = new Game();
     this.dice = new Dice();
     this.isAuth = isAuth;
     this.mt = new MersenneTwister();
     
-    Game.clear(this.game);
+    this.redis.get(`room-${this.roomId}`).then(prev => {
+        if (prev) {
+            this.isPlaying = JSON.parse(prev).isPlaying;
+            Game.copy(this.game, JSON.parse(prev).game);
+            Dice.clear(this.dice, this.mt)
+        } else {
+            Game.clear(this.game);
+        }
+    });
 }
 
 Kcataso.prototype = new Room();

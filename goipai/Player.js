@@ -13,6 +13,14 @@ Player.clear = function (player) {
     player.offense = [];
     player.peeping = false;
 }
+Player.copy = function (player, prev) {
+    player.uid = prev.uid || '';
+    player.hand = prev.hand || [];
+    player.defense = prev.defense || [];
+    player.hidden = prev.hidden || [];
+    player.offense = prev.offense || [];
+    player.peeping = prev.peeping;
+}
 
 Player.deal = function (player, deck) {
     player.hand.length = 0;

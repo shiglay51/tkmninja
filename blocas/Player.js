@@ -6,6 +6,12 @@ Player.clear = function (player) {
     player.finish = false;
     player.blocks = [];
 }
+Player.copy = function (player, prev) {
+    player.uid = prev.uid || '';
+    player.score = prev.score || 0;
+    player.finish = prev.finish || false;
+    player.blocks = prev.blocks || [];
+}
 
 Player.start = function (player) {
     player.blocks = [];

@@ -30,6 +30,33 @@ Player.clear = function (player) {
     player.merchantFleetResource = [];
 }
 
+Player.copy = function (player, prev) {
+    player.uid = prev.uid || '';
+    player.baseScore = prev.baseScore || 0;
+    player.bonusScore = prev.bonusScore || 0;
+    player.victoryPoint = prev.victoryPoint || 0;
+    player.burst = prev.burst || 0;
+    player.roadStock = prev.roadStock || 0;
+    player.settlementStock = prev.settlementStock || 0;
+    player.cityStock = prev.cityStock || 0;
+    player.cityWallStock = prev.cityWallStock || 0;
+    player.knightStock = prev.knightStock || [0, 0, 0];
+    player.basicKnightStock = prev.basicKnightStock || 0;
+    player.strongKnightStock = prev.strongKnightStock || 0;
+    player.mightyKnightStock = prev.mightyKnightStock || 0;
+    player.secondSettlement = prev.secondSettlement;
+    player.harbor = prev.harbor || [false, false, false, false, false, false];
+    player.resource = prev.resource || [0, 0, 0, 0, 0, 0, 0, 0];
+    player.progressCard = prev.progressCard || [];
+    player.pointCard = prev.pointCard || [];
+    player.development = prev.development || [0, 0, 0];
+    player.metropolisIndex = prev.metropolisIndex || [Index.NONE, Index.NONE, Index.NONE];
+    player.trading = prev.trading || false;
+    player.strengthOfKnights = prev.strengthOfKnights || 0;
+    player.burstThreshold = prev.burstThreshold || 0;
+    player.merchantFleetResource = prev.merchantFleetResource || [];
+}
+
 Player.start = function (player) {
     player.baseScore = 0;
     player.bonusScore = 0;

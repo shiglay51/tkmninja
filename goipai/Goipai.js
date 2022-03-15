@@ -13,13 +13,20 @@ var CARD_NAME = Const.CARD_NAME;
 var FONT_COLOR = Const.FONT_COLOR;
 var COLOR_NAME = Const.COLOR_NAME;
 
-var Goipai = function (isAuth = false) {
-    this.initialize('g');
+var Goipai = function (roomId, redis, isAuth = false) {
+    this.initialize('g', roomId, redis);
     this.isAuth = isAuth;
     this.game = new Game();
     this.mt = new MersenneTwister();
 
-    Game.clear(this.game);
+    this.redis.get(`room-${this.roomId}`).then(prev => {
+        if (prev) {
+            this.isPlaying = JSON.parse(prev).isPlaying;
+            Game.copy(this.game, JSON.parse(prev).game);
+        } else {
+            Game.clear(this.game);
+        }
+    });
 }
 
 Goipai.prototype = new Room();
