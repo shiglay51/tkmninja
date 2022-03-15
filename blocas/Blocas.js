@@ -2,6 +2,7 @@ var Room = require('../Room');
 var MersenneTwister = require('../MersenneTwister');
 var Game = require('./Game');
 var Const = require('./Const');
+const Redis = require('redis')
 const { BLOCK_PATTERN } = require('./Const');
 var Option = Const.Option;
 var State = Const.State;
@@ -12,14 +13,21 @@ var Pattern = Const.Pattern;
 var FONT_COLOR = Const.FONT_COLOR;
 var COLOR_NAME = Const.COLOR_NAME;
 
-var Blocas = function (isAuth = false) {
-    this.initialize('l');
+var Blocas = function (roomId, redis, isAuth = false) {
+    this.initialize('l', roomId, redis);
     
     this.game = new Game();
     this.isAuth = isAuth;
     this.mt = new MersenneTwister();
-    
-    Game.clear(this.game);
+
+    this.redis.get(`room-${this.roomId}`).then(prev => {
+        if (prev) {
+            this.isPlaying = JSON.parse(prev).isPlaying;
+            Game.copy(this.game, JSON.parse(prev).game);
+        } else {
+            Game.clear(this.game);
+        }
+    });
 }
 
 Blocas.prototype = new Room();

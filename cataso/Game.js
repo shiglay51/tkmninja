@@ -79,6 +79,56 @@ Game.clear = function (game) {
     for (i = 0; i < len1; i++) { Player.clear(playerList[i]); }
 }
 
+Game.copy = function (game, prev) {
+    game.state = prev.state;
+    game.setup = prev.setup;
+    game.hidden = prev.hidden;
+    game.sound = '';
+    game.playerSize = prev.playerSize;
+    game.phase = prev.phase;
+    game.active = prev.active;
+    game.priority = prev.priority || [];
+    game.canPlayCard = prev.canPlayCard;
+
+    game.secondSettlement = prev.secondSettlement;
+
+    game.trade = prev.trade || {
+          output: [0, 0, 0, 0, 0]
+        , input: [0, 0, 0, 0, 0]
+        , playerIndex: Index.NONE
+    };
+
+    game.largestArmy = prev.largestArmy;
+    game.longestRoad =  prev.longestRoad;
+    game.robber = prev.robber;
+    game.dice1 = prev.dice1;
+    game.dice2 = prev.dice2;
+    game.landList = prev.landList || [];
+    game.diceHistory = prev.diceHistory || [];
+
+    game.settlementList = prev.settlementList || [];
+
+    game.roadList = prev.roadList || [];
+
+    if (game.roadList.length === 0) {        
+        var roadList = game.roadList = [];
+        for (i = 0; i < 72; i++) { roadList.push(Index.NONE); }
+    }
+    game.numberList = prev.numberList || [];
+    game.resourceStock = prev.resourceStock || [0, 0, 0, 0, 0];;
+    game.cardStock = prev.cardStock || [];
+
+        var playerList = game.playerList = [
+          new Player()
+        , new Player()
+        , new Player()
+        , new Player()
+    ];
+
+    var len1 = playerList.length;
+    for (i = 0; i < len1; i++) { Player.copy(playerList[i], prev.playerList[i]); }
+}
+
 Game.start = function (game, mt) {
     mt.setSeed((new Date()).getTime());
     game.state = State.PLAYING;

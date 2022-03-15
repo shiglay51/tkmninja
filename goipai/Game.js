@@ -62,6 +62,28 @@ Game.clear = function (game) {
     }
 }
 
+Game.copy = function (game, prev) {
+    game.state = prev.state;
+    game.sound = '';
+    game.phase = prev.phase;
+    game.active = prev.active;
+    game.priority = prev.priority || [];
+    game.try = prev.try;
+    game.score = prev.score || [0, 0];
+
+    var playerList = game.playerList = [
+          new Player()
+        , new Player()
+        , new Player()
+        , new Player()
+    ];
+
+    var i;
+    for (i = 0; i < playerList.length; i++) {
+        Player.copy(playerList[i], prev.playerList[i]);
+    }
+}
+
 Game.start = function (game, mt)  {
     game.state = State.PLAYING;
     game.sound = '';

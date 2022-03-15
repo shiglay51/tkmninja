@@ -33,6 +33,30 @@ Game.clear = function (game) {
     Player.clear(playerList[0]);
     Player.clear(playerList[1]);
 }
+Game.copy = function (game, prev) {
+    game.setup = prev.setup;
+    game.state = prev.state;
+    game.sound = '';
+    game.phase = prev.phase;
+    game.active = prev.active;
+    game.playing = prev.playing;
+    game.target = prev.target || { x: Index.NONE, y: Index.NONE };
+    game.troopDeck = prev.troopDeck || [];
+    game.tacticsDeck = prev.tacticsDeck || [];
+    game.flagList = prev.flagList || [];
+    game.size = prev.size || [];
+    game.weather = prev.weather || [];
+    game.stock = prev.stock || [];
+    game.before = prev.before || { idx: Index.NONE, x: Index.NONE, y: Index.NONE };
+    game.playLog = prev.playLog || [];
+    game.log = prev.log || {};
+    game.turn = prev.turn || 1;
+
+    var playerList = game.playerList = [new Player(), new Player()];
+
+    Player.copy(playerList[0], prev.playerList[0]);
+    Player.copy(playerList[1], prev.playerList[1]);
+}
 
 Game.start = function (game, mt) {
     game.state = State.PLAYING;

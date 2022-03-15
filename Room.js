@@ -6,13 +6,18 @@ Room.prototype.owner = null;
 Room.prototype.watchDogTimer = null;
 Room.prototype.isAuth = null;
 Room.prototype.chatCount = {};
+Room.prototype.redis = null;
+Room.prototype.roomId = null;
 
-Room.prototype.initialize = function (symbol) {
+Room.prototype.initialize = function (symbol, roomId, redis) {
     this.symbol = symbol;
     this.userList = [];
     this.owner = null;
     this.isPlaying = false;
     this.chatCount = {};
+
+    this.roomId = roomId
+    this.redis = redis
 }
 
 Room.prototype.resetWatchDog = function() {
@@ -102,7 +107,16 @@ Room.prototype.broadcast = function (message, resetWatchDog = true) {
     if(resetWatchDog) {
         this.resetWatchDog();
     }
+    const msg = {
+        isPlaying: this.isPlaying,
+        game: JSON.parse(message)
+    }
+    this.saveGame(JSON.stringify(msg));
     this._broadcast('I' + message);
+}
+
+Room.prototype.saveGame = function (game) {
+    this.redis.SET(`room-${this.roomId}`, game)
 }
 
 Room.prototype.chat = function (uid, color, message) {

@@ -45,3 +45,5 @@ Temporary Items
 cert/
 
 memo
+
+node_modules/
