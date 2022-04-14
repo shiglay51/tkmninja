@@ -820,6 +820,7 @@ BattleRaiso.prototype.stopTimer = function (game) {
 }
 
 BattleRaiso.prototype.startTimer = function (game) {
+    this.stopTimer(game);
     this.timer = setInterval(() => {
         game.playerList[game.active].time++;
     }, 1000);
@@ -833,6 +834,7 @@ BattleRaiso.prototype.stopBroadcastTimer = function (game) {
 }
 
 BattleRaiso.prototype.startBroadcastTimer = function (game) {
+    this.stopBroadcastTimer(game);
     this.clockTimer = setInterval(() => {
         this.broadcast(JSON.stringify(game), false)
     }, 1000);
