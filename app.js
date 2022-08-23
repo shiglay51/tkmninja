@@ -11,7 +11,7 @@ var Blocas = require('./blocas/Blocas');
 
 const redis = require('redis')
 
-const redisURL =  process.env.REDIS_TLS_URL || 'redis://localhost:6379'
+const redisURL =  process.env.REDIS_TLS_URL || process.env.REDIS_URL || 'redis://localhost:6379'
 const client = redis.createClient({
     url: redisURL,
     socket: {
