@@ -21,14 +21,14 @@ Room.prototype.initialize = function (symbol, roomId, redis) {
 }
 
 Room.prototype.resetWatchDog = function () {
-    console.log('RESET WATCHDOG', this.roomId);
+    // console.log('RESET WATCHDOG', this.roomId);
     if(this.watchDogTimer) {
         clearTimeout(this.watchDogTimer);
     }
     this.watchDogTimer = setTimeout(() => {
         this.owner = null;
         this._broadcast('G');
-        console.log('EXPIRE WATCHDOG', this.roomId);
+        // console.log('EXPIRE WATCHDOG', this.roomId);
     }, 1000 * 60 * 10 /* 10 min */);   
 }
 
