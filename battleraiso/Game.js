@@ -163,7 +163,17 @@ Game.discard = function (game) {
 }
 
 Game.nextTurn = function (game) {
-    game.log.afterHand =  game.playerList[game.active].hand.map(c => Game.getCardName(c));
+    game.log.afterHand = game.playerList[game.active].hand.map(c => Game.getCardName(c));
+    var dt = new Date();
+    var y = dt.getFullYear();
+    var m = String(dt.getMonth()+1).padStart(2, '0');
+    var d = String(dt.getDate()).padStart(2, '0');
+    var result = y + m + d;
+    game.log.meta = {
+        date: result,
+        player1: game.playerList[0].uid,
+        player2: game.playerList[1].uid
+    }
     game.playLog.push(game.log);
     game.active = game.active === 0 ? 1 : 0;
     game.log = {
