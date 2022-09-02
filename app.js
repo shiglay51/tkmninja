@@ -354,6 +354,13 @@ wss.on('connection', function (ws) {
                         , user.uid + 'のダイス=>[' + MersenneTwister.Share.nextInt(1, 100) + ']'
                     );
                     break;
+                case 'g':
+                    param = splitSyntaxType1(message);
+                    if (param.length > 1 && param[0] === '/') {
+                        roomList[index].onCommand(user, param.split(' '));
+                    }
+                    break;                    
+
             }
         }
     });

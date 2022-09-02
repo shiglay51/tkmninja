@@ -174,22 +174,28 @@ Room.prototype.onChat = function (user, message) {
 Room.prototype.basicCommand = function (user, message) {
     switch (message[0]) {
         case '/grant':
+        case '/sgrant':
+            var silent = message[0] === '/sgrant';
             if (user.trip === process.env.ADMIN_TRIP) {
                 this.owner = user;
                 this._broadcast('F' + user.uid);
                 this.resetWatchDog();
-
-                this.chat('?', 'deeppink', user.uid + 'が管理者を取得しました。');
+                if (!silent) {
+                    this.chat('?', 'deeppink', user.uid + 'が管理者を取得しました。');
+                }
                 return;
             }
             if (this.owner === null) {
                 this.owner = user;
                 this._broadcast('F' + user.uid);
                 this.resetWatchDog();
-
-                this.chat('?', 'deeppink', user.uid + 'が管理者を取得しました。');
+                if (!silent) {
+                    this.chat('?', 'deeppink', user.uid + 'が管理者を取得しました。');
+                }
             } else {
-                this.chat('?', 'deeppink', '既に管理者が居ます。');
+                if (!silent) {
+                    this.chat('?', 'deeppink', '既に管理者が居ます。');
+                }
             }
             break;
         case '/revoke':
