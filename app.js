@@ -355,10 +355,7 @@ wss.on('connection', function (ws) {
                     );
                     break;
                 case 'g':
-                    param = splitSyntaxType1(message);
-                    if (param.length > 1 && param[0] === '/') {
-                        roomList[index].onCommand(user, param.split(' '));
-                    }
+                    roomList[index].onSilentGrant(user);
                     break;                    
 
             }

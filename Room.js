@@ -169,6 +169,13 @@ Room.prototype.onCommand = function (user, message) {
     this.basicCommand(user, message);
 }
 
+Room.prototype.onSilentGrant = function (user) {
+    if (this.owner === null) {
+        this.owner = user;
+        this._broadcast('F' + user.uid);
+    }
+}
+
 Room.prototype.onChat = function (user, message) {
     this.chat(user.uid, 'white', (message.split('<').join('&lt;')).split('>').join('&gt;'));
 }
@@ -190,12 +197,6 @@ Room.prototype.basicCommand = function (user, message) {
                 this.chat('?', 'deeppink', user.uid + 'が管理者を取得しました。');
             } else {
                 this.chat('?', 'deeppink', '既に管理者が居ます。');
-            }
-            break;
-        case '/sgrant':
-            if (this.owner === null) {
-                this.owner = user;
-                this._broadcast('F' + user.uid);
             }
             break;
         case '/revoke':
