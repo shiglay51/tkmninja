@@ -31,7 +31,7 @@ Room.prototype.resetWatchDog = function () {
     this.roomTrip = null;
     this._broadcast("G");
     // console.log('EXPIRE WATCHDOG', this.roomId);
-  }, 1000 * 60 * 10 /* 10 min */);
+  }, 1000 * 60 * 3 /* 3 min */);
 };
 
 Room.prototype.resetChatCount = function (uid) {
