@@ -143,7 +143,9 @@ var createTrip = function (source) {
 var auth = function (index, trip) {
   if (!roomList[index].isAuth) return true;
   if (trip == "") return false;
-
+  if (roomList[index].roomTrip && roomList[index].roomTrip !== trip) {
+    return false;
+  }
   var owner = roomList[index].userList.filter(
     (user) => user === roomList[index].owner
   );
@@ -175,6 +177,7 @@ var login = function (index, ws, message) {
   var isSuccessful = false;
 
   var token = splitSyntaxType1(message).split("#", 2);
+  var name = token[0];
   var uid = token[0];
 
   var src;
@@ -185,9 +188,14 @@ var login = function (index, ws, message) {
   var trip = "";
   if (src) {
     trip = createTrip(src);
+    uid = `${uid}(${trip.substring(0, 6)})`;
   }
 
-  if (uid.length > 0 && uid.match(/^[0-9A-Za-z]{1,12}$/) && auth(index, trip)) {
+  if (
+    name.length > 0 &&
+    name.match(/^[0-9A-Za-z]{1,12}$/) &&
+    auth(index, trip)
+  ) {
     isSuccessful = true;
 
     var i;

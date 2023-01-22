@@ -8,6 +8,7 @@ Room.prototype.isAuth = null;
 Room.prototype.chatCount = {};
 Room.prototype.redis = null;
 Room.prototype.roomId = null;
+Room.prototype.roomTrip = null;
 
 Room.prototype.initialize = function (symbol, roomId, redis) {
   this.symbol = symbol;
@@ -27,6 +28,7 @@ Room.prototype.resetWatchDog = function () {
   }
   this.watchDogTimer = setTimeout(() => {
     this.owner = null;
+    this.roomTrip = null;
     this._broadcast("G");
     // console.log('EXPIRE WATCHDOG', this.roomId);
   }, 1000 * 60 * 10 /* 10 min */);
@@ -197,8 +199,13 @@ Room.prototype.basicCommand = function (user, message) {
         this.chat("?", "deeppink", user.uid + "が管理者を取得しました。");
         return;
       }
+      if (this.roomTrip && this.roomTrip !== user.trip) {
+        this.chat("?", "deeppink", "既に管理者が居ます。");
+        return;
+      }
       if (this.owner === null) {
         this.owner = user;
+        this.roomTrip = user.trip;
         this._broadcast("F" + user.uid);
         this.resetWatchDog();
         this.chat("?", "deeppink", user.uid + "が管理者を取得しました。");
@@ -209,6 +216,7 @@ Room.prototype.basicCommand = function (user, message) {
     case "/revoke":
       if (this.owner !== null && this.owner === user) {
         this.owner = null;
+        this.roomTrip = null;
         this._broadcast("G");
 
         this.chat("?", "deeppink", user.uid + "が管理者を辞退しました。");
