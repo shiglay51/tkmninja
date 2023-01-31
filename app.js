@@ -227,7 +227,7 @@ var login = function (index, ws, message) {
         roomList[index]._broadcast("D" + user.uid);
       }
       console.log(
-        `login successfull: <${user.uid}> from <${user.ws.upgradeReq.headers["x-forwarded-for"]}>`
+        `login successfull: <${user.uid}> <TRIP:${trip}> from <${user.ws.upgradeReq.headers["x-forwarded-for"]}>`
       );
 
       if (roomList[index].owner !== null) {
