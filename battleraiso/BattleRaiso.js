@@ -874,7 +874,8 @@ BattleRaiso.prototype.startTimer = function (game) {
             this.stopBroadcastTimer(game);
 
             this.chat('?', 'orange', '--「' + lose_uid + '(' + COLOR_NAME[looser] + ')」時間切れ--');
-            this.chat('?', 'deeppink', '++ 「' + win_uid + '(' + COLOR_NAME[winner] + ')」勝利 おめでとう  ++');
+            this.chat('?', 'deeppink', '++勝利 おめでとう++');
+            this.chat('?', 'deeppink', win_uid + '(' + COLOR_NAME[winner] + ')');
         }
     }, 1000);
 };
