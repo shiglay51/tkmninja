@@ -31,8 +31,8 @@ Dice.reset = function(dice) {
 Dice.roll = function(dice) {
     if(dice.seek > dice.reel.length / 2) { this.reset(dice); }
 
-    dice.first = dice.reel[dice.seek];
-    dice.seccond = dice.reel[dice.reel.length - (dice.seek + 1)];
+    dice.first = 2; //dice.reel[dice.seek];
+    dice.seccond = 3; // dice.reel[dice.reel.length - (dice.seek + 1)];
 
     dice.seek++;
 }
