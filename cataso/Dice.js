@@ -17,7 +17,7 @@ Dice.reset = function(dice) {
     dice.reel.length = 0;
 
     var i;
-    for(i = 0; i < 3; i++) {
+    for(i = 0; i < 2; i++) {
         var j;
         var k;
         for(j = 1; j <= 6; j++) {
@@ -31,14 +31,14 @@ Dice.reset = function(dice) {
 }
 
 Dice.roll = function(dice) {
-    if(dice.seek > dice.reel.length / 2) { this.reset(dice); }
+    if(dice.seek >= dice.reel.length)  { this.reset(dice); }
 
     var v1s = [-1,-1, 1, 1, 3, 3, 5, 2, 5, 4, 4, 5, 6];
     var v2s = [-1,-1, 1, 2, 1, 2, 1, 5, 3, 5, 6, 6, 6];
     
     var n = dice.reel[dice.seek];
     dice.first = v1s[n];
-    dice.second = v2s[n];
+    dice.seccond = v2s[n];
     
     dice.seek++;
 }
