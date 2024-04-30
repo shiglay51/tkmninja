@@ -40,8 +40,8 @@ Dice.roll = function(dice) {
     var v1s = [-1,-1, 1, 1, 3, 3, 5, 2, 5, 4, 4, 5, 6];
     var v2s = [-1,-1, 1, 2, 1, 2, 1, 5, 3, 5, 6, 6, 6];
     
-    dice.first = v1s[dice.seek];
-    dice.second = v2s[dice.seek];
+    dice.first = v1s[n];
+    dice.second = v2s[n];
     
     dice.seek++;
 }
