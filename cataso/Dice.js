@@ -33,6 +33,9 @@ Dice.roll = function(dice) {
     dice.first = dice.reel[dice.seek];
     dice.seccond = dice.reel[dice.reel.length - (dice.seek + 1)];
 
+    var v1s = [1];
+    dice.first = v1s[0];
+    
     dice.seek++;
 }
 
