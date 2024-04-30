@@ -22,7 +22,8 @@ Dice.reset = function(dice) {
         var k;
         for(j = 1; j <= 6; j++) {
             for(k = 1; k <= 6; k++) {
-            dice.reel.push(j+k);
+                dice.reel.push(j+k);
+            }
         }
     }
 
