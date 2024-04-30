@@ -32,10 +32,6 @@ Dice.reset = function(dice) {
 Dice.roll = function(dice) {
     if(dice.seek > dice.reel.length / 2) { this.reset(dice); }
 
-    /*dice.first = dice.reel[dice.seek];
-    dice.seccond = dice.reel[dice.reel.length - (dice.seek + 1)];
-    
-             0,  1, 2  3  4  5  6  7  8  9 10 11 12    */
     var v1s = [-1,-1, 1, 1, 3, 3, 5, 2, 5, 4, 4, 5, 6];
     var v2s = [-1,-1, 1, 2, 1, 2, 1, 5, 3, 5, 6, 6, 6];
     
