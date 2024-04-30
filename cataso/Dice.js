@@ -31,7 +31,7 @@ Dice.reset = function(dice) {
 }
 
 Dice.roll = function(dice) {
-    if(dice.seek >= dice.reel.length)  { this.reset(dice); }
+    if(dice.seek >= dice.reel.length-3)  { this.reset(dice); }
 
     var v1s = [-1,-1, 1, 1, 3, 3, 5, 2, 5, 4, 4, 5, 6];
     var v2s = [-1,-1, 1, 2, 1, 2, 1, 5, 3, 5, 6, 6, 6];
